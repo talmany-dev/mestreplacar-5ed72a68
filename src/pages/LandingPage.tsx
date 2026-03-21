@@ -1,4 +1,5 @@
 import logo from "@/assets/logo.png";
+import heroBg from "@/assets/hero-bg.png";
 import { Button } from "@/components/ui/button";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import {
