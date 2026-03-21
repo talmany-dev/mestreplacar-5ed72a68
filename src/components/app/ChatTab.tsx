@@ -38,20 +38,20 @@ const ChatTab = () => {
         {messages.map((msg) => (
           <div key={msg.id} className={`flex flex-col ${msg.isYou ? "items-end" : "items-start"}`}>
             {!msg.isYou && <span className="text-xs text-muted-foreground mb-0.5 ml-1">{msg.user}</span>}
-            <div className={`rounded-2xl px-4 py-2.5 max-w-[80%] text-sm ${msg.isYou ? "bg-navy text-primary-foreground/90 rounded-br-md" : "bg-card shadow-card rounded-bl-md text-foreground"}`}>
+            <div className={`rounded-2xl px-4 py-2.5 max-w-[80%] text-sm ${msg.isYou ? "bg-gold/15 text-foreground rounded-br-md border border-gold/20" : "bg-card border border-gold/10 rounded-bl-md text-foreground"}`}>
               {msg.text}
             </div>
             <span className="text-[10px] text-muted-foreground mt-0.5 mx-1">{msg.time}</span>
           </div>
         ))}
       </div>
-      <div className="p-3 border-t border-border bg-card flex gap-2">
+      <div className="p-3 border-t border-gold/10 bg-card flex gap-2">
         <Input
           placeholder="Manda a resenha..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          className="flex-1"
+          className="flex-1 bg-secondary border-gold/10 text-foreground placeholder:text-muted-foreground"
         />
         <Button size="icon" variant="gold" onClick={sendMessage}>
           <Send className="h-4 w-4" />
