@@ -166,29 +166,33 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Tournament Cards */}
+      {/* Why Mestre do Placar */}
       <section className="py-16 md:py-24 relative">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
         <div className="container relative">
           <ScrollReveal>
             <div className="text-center mb-10">
-              <p className="text-sm font-semibold uppercase tracking-widest text-gold mb-2">Torneios</p>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">
-                Escolha Seu <span className="text-gradient-gold">Campeonato</span>
+                POR QUE O <span className="text-gradient-gold">MESTRE DO PLACAR</span>?
               </h2>
             </div>
           </ScrollReveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
             {[
-              { flag: "🏆", name: "Copa do Mundo 2026" },
-              { flag: "🇧🇷", name: "Brasileirão" },
-              { flag: "⚽", name: "Champions League" },
-              { flag: "🇪🇺", name: "Euro 2028" },
-            ].map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 80}>
-                <div className="bg-card rounded-xl p-4 text-center border border-gold/10 hover:border-gold/30 transition-colors cursor-pointer">
-                  <span className="text-3xl block mb-2">{t.flag}</span>
-                  <p className="text-xs font-semibold text-foreground">{t.name}</p>
+              { icon: Trophy, title: "Ranking em Tempo Real", desc: "Placar atualizado gol a gol com latência < 30s" },
+              { icon: Users, title: "Bolões Multi-Grupo", desc: "Crie e participe de vários bolões simultaneamente" },
+              { icon: Zap, title: "Jogo de Ouro", desc: "Escolha um jogo por rodada para dobrar seus pontos" },
+              { icon: Shield, title: "Divisões Dinâmicas", desc: "Suba de série com promoção/rebaixamento semanal" },
+            ].map((item, i) => (
+              <ScrollReveal key={item.title} delay={i * 80}>
+                <div className="flex items-start gap-4 bg-card rounded-xl p-5 border border-gold/10 hover:border-gold/30 transition-colors">
+                  <div className="shrink-0 w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center">
+                    <item.icon className="h-5 w-5 text-gold" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-base font-semibold text-foreground">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground mt-1">{item.desc}</p>
+                  </div>
                 </div>
               </ScrollReveal>
             ))}
