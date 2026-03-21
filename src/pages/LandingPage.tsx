@@ -41,7 +41,7 @@ const LandingPage = () => {
       <section className="relative overflow-hidden py-20 md:py-32">
         <div className="absolute inset-0">
           <img src={heroBg} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-background/80" />
+          <div className="absolute inset-0 bg-background/60" />
         </div>
         <div className="absolute inset-0 bg-radial-glow" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
