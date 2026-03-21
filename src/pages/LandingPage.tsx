@@ -78,21 +78,8 @@ const LandingPage = () => {
             <div className="relative flex items-center justify-center">
               <ScrollReveal delay={150}>
                 <div className="relative">
-                  {/* Golden glow behind logo */}
                   <div className="absolute inset-0 blur-3xl bg-gold/10 rounded-full scale-150" />
                   <img src={logo} alt="Mestre do Placar" className="relative h-40 w-40 md:h-52 md:w-52 drop-shadow-2xl animate-float" />
-                </div>
-              </ScrollReveal>
-              {/* Phone mockup */}
-              <ScrollReveal delay={300}>
-                <div className="absolute -right-4 md:right-0 bottom-0 w-36 md:w-44 bg-card border border-gold/20 rounded-2xl p-3 shadow-gold-glow">
-                  <div className="text-[9px] font-display text-gold mb-1.5 uppercase tracking-wider">Ranking</div>
-                  {["Carlos M.", "Ana Paula", "Você"].map((n, i) => (
-                    <div key={n} className={`flex items-center justify-between text-[10px] py-1 ${i < 2 ? "border-b border-border" : ""}`}>
-                      <span className={`${n === "Você" ? "text-gold font-semibold" : "text-muted-foreground"}`}>{i + 1}. {n}</span>
-                      <span className="text-foreground font-display font-bold">{[187, 172, 127][i]}</span>
-                    </div>
-                  ))}
                 </div>
               </ScrollReveal>
             </div>
