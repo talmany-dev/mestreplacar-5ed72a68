@@ -35,21 +35,21 @@ const AdminPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="bg-navy px-4 py-3 flex items-center gap-3">
-        <button onClick={() => navigate("/app")} className="text-primary-foreground/60 hover:text-primary-foreground/90 transition-colors">
+      <header className="glassmorphism px-4 py-3 flex items-center gap-3 border-b border-gold/10">
+        <button onClick={() => navigate("/app")} className="text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <h1 className="font-display text-lg text-gold">PAINEL ADMIN</h1>
+        <h1 className="font-display text-lg text-gradient-gold">PAINEL ADMIN</h1>
       </header>
 
       <div className="p-4 space-y-6 max-w-lg mx-auto">
         {/* Scoring Rules */}
         <section>
           <div className="flex items-center gap-2 mb-3">
-            <Settings2 className="h-4 w-4 text-grass" />
+            <Settings2 className="h-4 w-4 text-gold" />
             <h2 className="font-display text-lg font-bold text-foreground">Regras de Pontuação</h2>
           </div>
-          <div className="bg-card rounded-xl shadow-card overflow-hidden">
+          <div className="bg-card rounded-xl border border-gold/10 overflow-hidden">
             {SCORING_RULES.map((rule, i) => (
               <div key={rule.label} className={`flex items-center justify-between px-4 py-3 ${i < SCORING_RULES.length - 1 ? "border-b border-border" : ""}`}>
                 <span className="text-sm text-foreground">{rule.label}</span>
@@ -57,7 +57,7 @@ const AdminPage = () => {
                   <Input
                     type="number"
                     defaultValue={rule.pts}
-                    className="w-16 h-8 text-center text-sm font-display font-bold"
+                    className="w-16 h-8 text-center text-sm font-display font-bold bg-secondary border-gold/10 text-foreground"
                   />
                   <span className="text-xs text-muted-foreground">pts</span>
                 </div>
@@ -72,18 +72,18 @@ const AdminPage = () => {
             <Gift className="h-4 w-4 text-gold" />
             <h2 className="font-display text-lg font-bold text-foreground">Premiação</h2>
           </div>
-          <div className="bg-card rounded-xl shadow-card p-4 space-y-3">
+          <div className="bg-card rounded-xl border border-gold/10 p-4 space-y-3">
             <div>
               <Label className="text-xs text-muted-foreground">1º Lugar</Label>
-              <Input defaultValue="70% do prêmio" className="mt-1" />
+              <Input defaultValue="70% do prêmio" className="mt-1 bg-secondary border-gold/10 text-foreground" />
             </div>
             <div>
               <Label className="text-xs text-muted-foreground">2º Lugar</Label>
-              <Input defaultValue="20% do prêmio" className="mt-1" />
+              <Input defaultValue="20% do prêmio" className="mt-1 bg-secondary border-gold/10 text-foreground" />
             </div>
             <div>
               <Label className="text-xs text-muted-foreground">3º Lugar</Label>
-              <Input defaultValue="10% do prêmio" className="mt-1" />
+              <Input defaultValue="10% do prêmio" className="mt-1 bg-secondary border-gold/10 text-foreground" />
             </div>
           </div>
         </section>
@@ -91,12 +91,12 @@ const AdminPage = () => {
         {/* Invite Link */}
         <section>
           <div className="flex items-center gap-2 mb-3">
-            <Users className="h-4 w-4 text-grass" />
+            <Users className="h-4 w-4 text-gold" />
             <h2 className="font-display text-lg font-bold text-foreground">Convite</h2>
           </div>
-          <div className="bg-card rounded-xl shadow-card p-4">
+          <div className="bg-card rounded-xl border border-gold/10 p-4">
             <div className="flex gap-2">
-              <Input value={inviteLink} readOnly className="text-sm flex-1" />
+              <Input value={inviteLink} readOnly className="text-sm flex-1 bg-secondary border-gold/10 text-foreground" />
               <Button variant="gold" size="icon" onClick={copyLink}>
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
@@ -110,7 +110,7 @@ const AdminPage = () => {
             <Trophy className="h-4 w-4 text-gold" />
             <h2 className="font-display text-lg font-bold text-foreground">Membros ({MEMBERS.length})</h2>
           </div>
-          <div className="bg-card rounded-xl shadow-card overflow-hidden">
+          <div className="bg-card rounded-xl border border-gold/10 overflow-hidden">
             {MEMBERS.map((member, i) => (
               <div key={member.name} className={`flex items-center justify-between px-4 py-3 ${i < MEMBERS.length - 1 ? "border-b border-border" : ""}`}>
                 <span className="text-sm text-foreground">{member.name}</span>
@@ -120,14 +120,14 @@ const AdminPage = () => {
                     <Button size="sm" variant="ghost" className="h-7 text-xs text-destructive">Recusar</Button>
                   </div>
                 ) : (
-                  <Badge variant="outline" className="text-xs text-grass border-grass/30">Ativo</Badge>
+                  <Badge variant="outline" className="text-xs text-gold border-gold/20 bg-gold/5">Ativo</Badge>
                 )}
               </div>
             ))}
           </div>
         </section>
 
-        <Button variant="hero" className="w-full" size="lg">
+        <Button variant="hero" className="w-full shadow-gold-glow" size="lg">
           Salvar Alterações
         </Button>
       </div>

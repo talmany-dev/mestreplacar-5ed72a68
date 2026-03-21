@@ -67,7 +67,7 @@ const MatchesTab = () => {
     <div className="p-4 space-y-3 pb-4">
       <div className="flex items-center justify-between mb-2">
         <h2 className="font-display text-xl font-bold text-foreground">Rodada 1</h2>
-        <Badge variant="outline" className="text-grass border-grass/30 text-xs">Fase de Grupos</Badge>
+        <Badge variant="outline" className="text-gold border-gold/20 text-xs bg-gold/5">Fase de Grupos</Badge>
       </div>
 
       {matches.map((match) => (
@@ -76,13 +76,13 @@ const MatchesTab = () => {
             <button
               onClick={() => !match.locked && openBet(match)}
               disabled={match.locked}
-              className={`w-full bg-card rounded-xl p-4 shadow-card hover:shadow-card-hover transition-all duration-200 active:scale-[0.98] text-left ${match.locked ? "opacity-80" : ""} ${match.golden ? "ring-2 ring-gold/50" : ""}`}
+              className={`w-full bg-card rounded-xl p-4 border border-gold/10 hover:border-gold/25 transition-all duration-200 active:scale-[0.98] text-left ${match.locked ? "opacity-70" : ""} ${match.golden ? "ring-1 ring-gold/30 shadow-gold-glow" : ""}`}
             >
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs text-muted-foreground">{match.date} • {match.time}</span>
                 <div className="flex items-center gap-1.5">
                   {match.golden && <Star className="h-3.5 w-3.5 text-gold fill-gold" />}
-                  {match.locked ? <Lock className="h-3.5 w-3.5 text-muted-foreground" /> : <Clock className="h-3.5 w-3.5 text-grass" />}
+                  {match.locked ? <Lock className="h-3.5 w-3.5 text-muted-foreground" /> : <Clock className="h-3.5 w-3.5 text-gold" />}
                 </div>
               </div>
               <div className="flex items-center justify-between">
@@ -91,13 +91,13 @@ const MatchesTab = () => {
                   <span className="font-semibold text-sm text-foreground">{match.home}</span>
                 </div>
                 {match.bet ? (
-                  <div className="flex items-center gap-1 bg-navy/10 rounded-lg px-3 py-1.5 mx-2">
+                  <div className="flex items-center gap-1 bg-secondary rounded-lg px-3 py-1.5 mx-2 border border-gold/10">
                     <span className="font-display text-lg font-bold text-foreground">{match.bet.home}</span>
                     <span className="text-xs text-muted-foreground mx-1">×</span>
                     <span className="font-display text-lg font-bold text-foreground">{match.bet.away}</span>
                   </div>
                 ) : (
-                  <div className="mx-2 px-3 py-1.5 rounded-lg bg-muted text-xs text-muted-foreground font-medium">
+                  <div className="mx-2 px-3 py-1.5 rounded-lg bg-gold/10 text-xs text-gold font-medium border border-gold/20">
                     Apostar
                   </div>
                 )}
@@ -106,7 +106,6 @@ const MatchesTab = () => {
                   <span className="text-2xl">{match.awayFlag}</span>
                 </div>
               </div>
-              {/* CazéTV link */}
               {match.locked && (
                 <a
                   href="https://youtube.com/@CaseTv"
@@ -122,15 +121,14 @@ const MatchesTab = () => {
           </DrawerTrigger>
 
           {!match.locked && (
-            <DrawerContent className="bg-card">
+            <DrawerContent className="bg-card border-t border-gold/20">
               <DrawerHeader className="text-center">
-                <DrawerTitle className="font-display text-lg">
+                <DrawerTitle className="font-display text-lg text-foreground">
                   {match.homeFlag} {match.home} vs {match.away} {match.awayFlag}
                 </DrawerTitle>
                 <p className="text-xs text-muted-foreground">{match.date} às {match.time}</p>
               </DrawerHeader>
               <div className="px-6 pb-2 space-y-6">
-                {/* Score inputs */}
                 <div className="flex items-center justify-center gap-4">
                   <div className="text-center space-y-2">
                     <span className="text-3xl">{match.homeFlag}</span>
@@ -140,7 +138,7 @@ const MatchesTab = () => {
                       max="20"
                       value={homeScore}
                       onChange={(e) => setHomeScore(e.target.value)}
-                      className="w-20 h-14 text-center text-2xl font-display font-bold border-2 focus:border-gold"
+                      className="w-20 h-14 text-center text-2xl font-display font-bold border border-gold/20 bg-secondary text-foreground focus:border-gold/50"
                     />
                   </div>
                   <span className="text-2xl text-muted-foreground font-display mt-8">×</span>
@@ -152,18 +150,16 @@ const MatchesTab = () => {
                       max="20"
                       value={awayScore}
                       onChange={(e) => setAwayScore(e.target.value)}
-                      className="w-20 h-14 text-center text-2xl font-display font-bold border-2 focus:border-gold"
+                      className="w-20 h-14 text-center text-2xl font-display font-bold border border-gold/20 bg-secondary text-foreground focus:border-gold/50"
                     />
                   </div>
                 </div>
 
-                {/* Instant Bet */}
-                <Button variant="outline" className="w-full border-grass/30 text-grass hover:bg-grass/10" onClick={instantBet}>
+                <Button variant="outline" className="w-full border-gold/20 text-gold hover:bg-gold/5" onClick={instantBet}>
                   <Dices className="mr-2 h-4 w-4" /> Aposta Instantânea
                 </Button>
 
-                {/* Golden Game */}
-                <div className="flex items-center justify-between bg-gold/5 rounded-lg px-4 py-3 border border-gold/20">
+                <div className="flex items-center justify-between bg-gold/5 rounded-lg px-4 py-3 border border-gold/15">
                   <div className="flex items-center gap-2">
                     <Star className="h-5 w-5 text-gold fill-gold" />
                     <div>
@@ -182,7 +178,7 @@ const MatchesTab = () => {
                 )}
               </div>
               <DrawerFooter>
-                <Button variant="hero" size="lg" onClick={saveBet}>
+                <Button variant="hero" size="lg" className="shadow-gold-glow" onClick={saveBet}>
                   Confirmar Palpite
                 </Button>
                 <DrawerClose asChild>

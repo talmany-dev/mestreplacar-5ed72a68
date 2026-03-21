@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Crown, TrendingUp, TrendingDown, Minus, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ScrollReveal } from "@/components/ScrollReveal";
 
 interface Player {
   rank: number;
@@ -26,8 +25,8 @@ const PLAYERS: Player[] = [
 ];
 
 const divisionColors = {
-  A: { bg: "bg-gold/10", text: "text-gold-dark", border: "border-gold/30" },
-  B: { bg: "bg-grass/10", text: "text-grass", border: "border-grass/30" },
+  A: { bg: "bg-gold/10", text: "text-gold", border: "border-gold/20" },
+  B: { bg: "bg-grass/10", text: "text-grass", border: "border-grass/20" },
   C: { bg: "bg-muted", text: "text-muted-foreground", border: "border-border" },
 };
 
@@ -39,7 +38,6 @@ const TrendIcon = ({ trend }: { trend: string }) => {
 
 const RankingTab = () => {
   const shareToStories = () => {
-    // Mock share functionality
     alert("Compartilhamento visual gerado! (funcionalidade completa requer backend)");
   };
 
@@ -47,12 +45,11 @@ const RankingTab = () => {
     <div className="p-4 space-y-4 pb-4">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-xl font-bold text-foreground">Ranking Geral</h2>
-        <Button variant="outline" size="sm" onClick={shareToStories} className="text-xs gap-1.5">
+        <Button variant="outline" size="sm" onClick={shareToStories} className="text-xs gap-1.5 border-gold/20 text-gold hover:bg-gold/5">
           <Share2 className="h-3.5 w-3.5" /> Stories
         </Button>
       </div>
 
-      {/* Division labels */}
       <div className="flex gap-2">
         {(["A", "B", "C"] as const).map((d) => (
           <Badge key={d} variant="outline" className={`${divisionColors[d].bg} ${divisionColors[d].text} ${divisionColors[d].border} text-xs`}>
@@ -61,7 +58,6 @@ const RankingTab = () => {
         ))}
       </div>
 
-      {/* Ranking list */}
       <div className="space-y-2">
         {PLAYERS.map((player, i) => {
           const dc = divisionColors[player.division];
@@ -74,13 +70,13 @@ const RankingTab = () => {
                   Série {player.division}
                 </p>
               )}
-              <div className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 ${player.isYou ? "bg-gold/10 ring-1 ring-gold/30" : "bg-card shadow-card"}`}>
-                <span className={`font-display text-lg font-bold w-7 text-center ${player.rank <= 3 ? "text-gold-dark" : "text-muted-foreground"}`}>
+              <div className={`flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200 border ${player.isYou ? "bg-gold/5 border-gold/25" : "bg-card border-gold/10"}`}>
+                <span className={`font-display text-lg font-bold w-7 text-center ${player.rank <= 3 ? "text-gold" : "text-muted-foreground"}`}>
                   {player.rank}
                 </span>
                 {player.rank === 1 && <Crown className="h-4 w-4 text-gold fill-gold -ml-1" />}
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm font-medium truncate ${player.isYou ? "text-gold-dark font-semibold" : "text-foreground"}`}>
+                  <p className={`text-sm font-medium truncate ${player.isYou ? "text-gold font-semibold" : "text-foreground"}`}>
                     {player.name}
                   </p>
                 </div>

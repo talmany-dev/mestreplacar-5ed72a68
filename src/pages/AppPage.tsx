@@ -12,13 +12,13 @@ const AppPage = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      {/* Top bar */}
-      <header className="bg-navy px-4 py-3 flex items-center justify-between shrink-0">
+      {/* Top bar — glassmorphism */}
+      <header className="glassmorphism px-4 py-3 flex items-center justify-between shrink-0 border-b border-gold/10">
         <div className="flex items-center gap-2">
           <img src={logo} alt="Logo" className="h-8 w-8 rounded" />
-          <span className="font-display text-lg text-gold">MESTRE DO PLACAR</span>
+          <span className="font-display text-lg text-gradient-gold">MESTRE DO PLACAR</span>
         </div>
-        <div className="bg-navy-light/60 rounded-full px-3 py-1 text-xs font-semibold text-gold tabular-nums">
+        <div className="bg-secondary rounded-full px-3 py-1 text-xs font-semibold text-gold tabular-nums border border-gold/20">
           127 pts
         </div>
       </header>
@@ -33,7 +33,7 @@ const AppPage = () => {
         </div>
 
         {/* Bottom tabs */}
-        <TabsList className="shrink-0 h-16 bg-card border-t border-border rounded-none grid grid-cols-4 gap-0 p-0">
+        <TabsList className="shrink-0 h-16 bg-card border-t border-gold/10 rounded-none grid grid-cols-4 gap-0 p-0">
           {[
             { value: "matches", icon: Calendar, label: "Jogos" },
             { value: "ranking", icon: Trophy, label: "Ranking" },
