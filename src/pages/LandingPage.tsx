@@ -166,7 +166,7 @@ const LandingPage = () => {
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
             {[
-              { icon: Trophy, title: "Ranking em Tempo Real", desc: "Placar atualizado gol a gol com latência < 30s" },
+              { icon: Trophy, title: "Ranking em Tempo Real", desc: "Placar atualizado gol a gol com latência " },
               { icon: Users, title: "Bolões Multi-Grupo", desc: "Crie e participe de vários bolões simultaneamente" },
               { icon: Zap, title: "Jogo de Ouro", desc: "Escolha um jogo por rodada para dobrar seus pontos" },
               { icon: Shield, title: "Divisões Dinâmicas", desc: "Suba de série com promoção/rebaixamento semanal" },
