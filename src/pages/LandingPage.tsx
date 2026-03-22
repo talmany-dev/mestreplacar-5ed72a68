@@ -146,7 +146,7 @@ const LandingPage = () => {
               { icon: MessageCircle, title: "Suba no Ranking", desc: "Acompanhe ao vivo sua posição. Lute para subir de Série e conquistar o título de Mestre!", step: "03" },
             ].map((item, i) => (
               <ScrollReveal key={item.title} delay={i * 100}>
-                <div className="relative bg-card rounded-xl p-6 border border-gold/10 hover:border-gold/30 transition-all duration-300 group">
+                <div className="relative bg-card rounded-xl p-6 border border-gold/10 hover:border-gold/30 transition-all duration-300 group h-full">
                   <span className="absolute -top-3 -left-2 font-display text-5xl font-bold text-gold/8">{item.step}</span>
                   <item.icon className="h-8 w-8 text-gold mb-4" />
                   <h3 className="font-display text-xl font-semibold text-foreground mb-2">{item.title}</h3>
