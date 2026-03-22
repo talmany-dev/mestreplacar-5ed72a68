@@ -135,7 +135,7 @@
   }
 
   .glassmorphism {
-    background: hsla(220, 60%, 4%, 0.7);
+    background: hsla(216, 67%, 30%, 0.8);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
