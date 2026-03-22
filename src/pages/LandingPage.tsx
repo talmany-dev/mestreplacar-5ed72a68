@@ -59,7 +59,7 @@ const LandingPage = () => {
                 </h1>
               </ScrollReveal>
               <ScrollReveal delay={100}>
-                <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-lg">
+                <p className="mt-6 text-lg md:text-xl text-foreground max-w-lg">
                   O bolão da Copa do Mundo mais completo. Aposte nos placares, acompanhe ao vivo e prove que você é o verdadeiro mestre.
                 </p>
               </ScrollReveal>
