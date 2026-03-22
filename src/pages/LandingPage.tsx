@@ -177,7 +177,7 @@ const LandingPage = () => {
               { icon: Shield, title: "Divisões Dinâmicas", desc: "Suba de série com promoção/rebaixamento semanal" },
             ].map((item, i) => (
               <ScrollReveal key={item.title} delay={i * 80}>
-                <div className="flex items-start gap-4 bg-card rounded-xl p-5 border border-gold/10 hover:border-gold/30 transition-colors">
+                <div className="flex items-start gap-4 bg-card rounded-xl p-5 border border-gold/10 hover:border-gold/30 transition-colors h-full">
                   <div className="shrink-0 w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center">
                     <item.icon className="h-5 w-5 text-gold" />
                   </div>
