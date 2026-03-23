@@ -248,7 +248,7 @@ const LandingPage = () => {
           </ScrollReveal>
           <div className="grid md:grid-cols-2 gap-6">
             <ScrollReveal delay={0}>
-              <div className="bg-card rounded-xl p-6 border border-gold/10 h-full flex flex-col">
+              <div className="bg-card rounded-xl p-6 border border-gold/10 h-full flex flex-col card-hover">
                 <p className="text-sm font-semibold text-grass uppercase tracking-wider">Gratuito</p>
                 <p className="mt-3 font-display text-4xl font-bold text-foreground">R$ 0</p>
                 <p className="text-sm text-muted-foreground mt-1">Para até 10 participantes</p>
@@ -263,7 +263,7 @@ const LandingPage = () => {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <div className="bg-card rounded-xl p-6 border-2 border-gold/30 h-full flex flex-col relative overflow-hidden shadow-gold-glow">
+              <div className="bg-card rounded-xl p-6 border-2 border-gold/30 h-full flex flex-col relative overflow-hidden shadow-gold-glow card-hover">
                 <div className="absolute top-0 right-0 bg-gold-gradient text-accent-foreground text-xs font-bold px-3 py-1 rounded-bl-lg">
                   POPULAR
                 </div>
