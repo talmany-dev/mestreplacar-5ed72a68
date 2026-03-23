@@ -126,6 +126,19 @@
     box-shadow: 0 0 20px 4px hsla(40, 40%, 55%, 0.25), 0 0 40px 8px hsla(40, 40%, 55%, 0.1);
   }
 
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: hsl(var(--gold) / 0.4);
+    box-shadow:
+      0 12px 32px -8px hsla(40, 40%, 55%, 0.25),
+      0 0 24px 2px hsla(40, 40%, 55%, 0.1),
+      0 8px 16px -4px rgba(0, 0, 0, 0.3);
+  }
+
   .bg-radial-glow {
     background: radial-gradient(ellipse at 50% 0%, hsla(40, 40%, 55%, 0.08) 0%, transparent 60%);
   }
