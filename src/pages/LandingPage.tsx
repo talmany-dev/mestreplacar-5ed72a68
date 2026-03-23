@@ -263,7 +263,7 @@ const LandingPage = () => {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={100}>
-              <div className="bg-card rounded-xl p-6 border-2 border-gold/30 h-full flex flex-col relative overflow-hidden shadow-gold-glow">
+              <div className="bg-card rounded-xl p-6 border-2 border-gold/30 h-full flex flex-col relative overflow-hidden shadow-gold-glow card-hover">
                 <div className="absolute top-0 right-0 bg-gold-gradient text-accent-foreground text-xs font-bold px-3 py-1 rounded-bl-lg">
                   POPULAR
                 </div>
