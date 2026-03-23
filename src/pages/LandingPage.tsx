@@ -84,7 +84,7 @@ const LandingPage = () => {
               <ScrollReveal delay={150}>
                 <div className="relative">
                   <div className="absolute inset-0 blur-3xl bg-gold/10 rounded-full scale-150" />
-                  <img src={logo} alt="Mestre do Placar" className="relative h-40 w-40 md:h-52 md:w-52 drop-shadow-2xl animate-float" />
+                  <img src={logo} alt="Mestre do Placar" className="relative h-80 w-80 md:h-[26rem] md:w-[26rem] drop-shadow-2xl animate-float" />
                 </div>
               </ScrollReveal>
             </div>
