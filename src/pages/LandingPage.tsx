@@ -115,7 +115,7 @@ const LandingPage = () => {
               { num: "3", label: "Países", icon: TrendingUp },
             ].map((stat, i) => (
               <ScrollReveal key={stat.label} delay={i * 80}>
-                <div className="bg-card rounded-xl p-5 text-center border border-gold/10 hover:border-gold/30 transition-colors duration-300">
+                <div className="bg-card rounded-xl p-5 text-center border border-gold/10 card-hover">
                   <stat.icon className="h-6 w-6 mx-auto mb-2 text-gold" />
                   <p className="text-3xl font-display font-bold text-foreground">{stat.num}</p>
                   <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
