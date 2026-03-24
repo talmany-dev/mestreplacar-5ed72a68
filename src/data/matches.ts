@@ -7,6 +7,7 @@ export interface Match {
   date: string;
   time: string;
   group: string;
+  round: number;
   locked: boolean;
   bet?: { home: number; away: number };
   golden?: boolean;
