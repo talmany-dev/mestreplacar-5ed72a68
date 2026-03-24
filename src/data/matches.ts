@@ -68,7 +68,7 @@ function flag(team: string): string {
   return FLAGS[team] || "🏳️";
 }
 
-function makeMatch(id: number, dateTime: string, home: string, away: string, group: string): Match {
+function makeMatch(id: number, dateTime: string, home: string, away: string, group: string, round: number): Match {
   const [datePart, timePart] = dateTime.split(" - ");
   const [day, month] = datePart.split("/");
   const months = ["", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
@@ -82,6 +82,7 @@ function makeMatch(id: number, dateTime: string, home: string, away: string, gro
     date: dateStr,
     time: timePart,
     group,
+    round,
     locked: false,
   };
 }
