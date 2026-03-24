@@ -10,6 +10,7 @@ import { Clock, Lock, Star, Youtube, Dices } from "lucide-react";
 import { GROUP_MATCHES, type Match } from "@/data/matches";
 
 const GROUPS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
+const ROUNDS = [1, 2, 3];
 
 const MatchesTab = () => {
   const [matches, setMatches] = useState<Match[]>(GROUP_MATCHES);
@@ -18,10 +19,13 @@ const MatchesTab = () => {
   const [awayScore, setAwayScore] = useState("");
   const [isGolden, setIsGolden] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState<string>("all");
+  const [selectedRound, setSelectedRound] = useState<number>(1);
 
-  const filteredMatches = selectedGroup === "all"
-    ? matches
-    : matches.filter((m) => m.group === selectedGroup);
+  const filteredMatches = matches.filter((m) => {
+    const groupOk = selectedGroup === "all" || m.group === selectedGroup;
+    const roundOk = m.round === selectedRound;
+    return groupOk && roundOk;
+  });
 
   const openBet = (match: Match) => {
     setSelectedMatch(match);
@@ -51,11 +55,21 @@ const MatchesTab = () => {
 
   return (
     <div className="p-4 space-y-3 pb-4">
-      <div className="flex items-center justify-between mb-1">
-        <h2 className="font-display text-xl font-bold text-foreground">Fase de Grupos</h2>
-        <Badge variant="outline" className="text-gold border-gold/20 text-xs bg-gold/5">
-          {filteredMatches.length} jogos
-        </Badge>
+      {/* Round selector */}
+      <div className="flex items-center gap-2 mb-1">
+        {ROUNDS.map((r) => (
+          <button
+            key={r}
+            onClick={() => setSelectedRound(r)}
+            className={`flex-1 py-2.5 rounded-xl text-sm font-display font-semibold transition-all border ${
+              selectedRound === r
+                ? "bg-gold/20 text-gold border-gold/30 shadow-gold-glow"
+                : "bg-card text-muted-foreground border-gold/10 hover:border-gold/20"
+            }`}
+          >
+            Rodada {r}
+          </button>
+        ))}
       </div>
 
       {/* Group filter */}
@@ -80,10 +94,23 @@ const MatchesTab = () => {
                 : "bg-secondary text-muted-foreground border-transparent hover:border-gold/10"
             }`}
           >
-            Grupo {g}
+            {g}
           </button>
         ))}
       </div>
+
+      <div className="flex items-center justify-between">
+        <h2 className="font-display text-lg font-bold text-foreground">Fase de Grupos</h2>
+        <Badge variant="outline" className="text-gold border-gold/20 text-xs bg-gold/5">
+          {filteredMatches.length} jogos
+        </Badge>
+      </div>
+
+      {filteredMatches.length === 0 && (
+        <div className="text-center py-8 text-muted-foreground text-sm">
+          Nenhum jogo encontrado para este filtro.
+        </div>
+      )}
 
       {filteredMatches.map((match) => (
         <Drawer key={match.id}>
