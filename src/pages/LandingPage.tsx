@@ -319,10 +319,7 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="py-8 border-t border-gold/10">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <img src={logo} alt="Mestre do Placar" className="h-8 w-8 rounded" />
-            <span className="font-display text-sm text-gradient-gold">MESTRE DO PLACAR</span>
-          </div>
+          <img src={logoSecondary} alt="Mestre do Placar" className="h-16 object-contain" />
           <p className="text-xs text-muted-foreground">© 2026 Mestre do Placar. Onde a resenha vira jogo.</p>
           <a href="https://youtube.com/@CazsTV" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
             <Youtube className="h-4 w-4" /> CazéTV
