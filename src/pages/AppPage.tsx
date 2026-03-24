@@ -6,6 +6,7 @@ import RankingTab from "@/components/app/RankingTab";
 import ChatTab from "@/components/app/ChatTab";
 import ProfileTab from "@/components/app/ProfileTab";
 import logo from "@/assets/logo.png";
+import logoSecondary from "@/assets/logo-secondary.png";
 
 const AppPage = () => {
   const [activeTab, setActiveTab] = useState("matches");
