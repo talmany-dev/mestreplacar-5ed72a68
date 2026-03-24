@@ -23,7 +23,7 @@ const LandingPage = () => {
       {/* Header — glassmorphism */}
       <header className="sticky top-0 z-50 glassmorphism border-b border-gold/10">
         <div className="container flex items-center justify-between h-16">
-          <img src={logoSecondary} alt="Mestre do Placar" className="h-8 object-contain" />
+          <img src={logoSecondary} alt="Mestre do Placar" className="h-16 object-contain" />
           <div className="flex items-center gap-2">
             <Button variant="ghost" className="text-muted-foreground hover:text-foreground hover:bg-secondary" onClick={() => navigate("/login")}>
               Entrar
