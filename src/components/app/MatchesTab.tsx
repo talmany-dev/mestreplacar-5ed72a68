@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Clock, Lock, Star, Youtube, Dices } from "lucide-react";
+import { Clock, Lock, Star, Youtube, Dices, Trophy, ChevronRight, Search } from "lucide-react";
 import { GROUP_MATCHES, type Match } from "@/data/matches";
 
 const GROUPS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
@@ -53,33 +53,63 @@ const MatchesTab = () => {
 
   const goldenUsed = matches.some((m) => m.golden && m.id !== selectedMatch?.id);
 
+  const betsPlaced = matches.filter((m) => m.bet).length;
+  const totalMatches = matches.filter((m) => m.round === selectedRound).length;
+
   return (
-    <div className="p-4 space-y-3 pb-4">
-      {/* Round selector */}
-      <div className="flex items-center gap-2 mb-1">
+    <div className="pb-4">
+      {/* Hero Banner */}
+      <div className="relative mx-4 mt-4 rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, hsl(216 70% 20%), hsl(216 67% 32%), hsl(216 60% 25%))' }}>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsla(40,40%,55%,0.15),transparent_60%)]" />
+        <div className="relative p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Trophy className="h-4 w-4 text-gold" />
+            <span className="text-xs font-semibold text-gold uppercase tracking-wider">Copa do Mundo 2026</span>
+          </div>
+          <h2 className="font-display text-xl font-bold text-foreground mb-1">
+            Fase de Grupos
+          </h2>
+          <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
+            Faça seus palpites para os jogos da Copa do Mundo 2026 nos EUA, Canadá e México.
+          </p>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 bg-gold/10 rounded-lg px-3 py-1.5 border border-gold/20">
+              <Star className="h-3.5 w-3.5 text-gold fill-gold" />
+              <span className="text-xs font-semibold text-gold">{betsPlaced}/{totalMatches} palpites</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Round Selector */}
+      <div className="flex items-center gap-2 px-4 mt-4">
         {ROUNDS.map((r) => (
           <button
             key={r}
             onClick={() => setSelectedRound(r)}
-            className={`flex-1 py-2.5 rounded-xl text-sm font-display font-semibold transition-all border ${
+            className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 border ${
               selectedRound === r
-                ? "bg-gold/20 text-gold border-gold/30 shadow-gold-glow"
-                : "bg-card text-muted-foreground border-gold/10 hover:border-gold/20"
+                ? "text-foreground border-gold/40"
+                : "text-muted-foreground border-transparent hover:border-gold/15"
             }`}
+            style={selectedRound === r ? {
+              background: 'linear-gradient(135deg, hsla(40,40%,55%,0.15), hsla(40,40%,55%,0.05))',
+              boxShadow: '0 0 12px 2px hsla(40,40%,55%,0.12)'
+            } : { background: 'hsla(216,55%,32%,0.5)' }}
           >
             Rodada {r}
           </button>
         ))}
       </div>
 
-      {/* Group filter */}
-      <div className="flex gap-1.5 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
+      {/* Group Filter */}
+      <div className="flex gap-1.5 overflow-x-auto pb-2 px-4 mt-3 scrollbar-hide">
         <button
           onClick={() => setSelectedGroup("all")}
-          className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+          className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all border ${
             selectedGroup === "all"
-              ? "bg-gold/20 text-gold border-gold/30"
-              : "bg-secondary text-muted-foreground border-transparent hover:border-gold/10"
+              ? "bg-gold/15 text-gold border-gold/30"
+              : "bg-secondary/50 text-muted-foreground border-transparent hover:border-gold/10"
           }`}
         >
           Todos
@@ -90,8 +120,8 @@ const MatchesTab = () => {
             onClick={() => setSelectedGroup(g)}
             className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border ${
               selectedGroup === g
-                ? "bg-gold/20 text-gold border-gold/30"
-                : "bg-secondary text-muted-foreground border-transparent hover:border-gold/10"
+                ? "bg-gold/15 text-gold border-gold/30"
+                : "bg-secondary/50 text-muted-foreground border-transparent hover:border-gold/10"
             }`}
           >
             {g}
@@ -99,143 +129,166 @@ const MatchesTab = () => {
         ))}
       </div>
 
-      <div className="flex items-center justify-between">
-        <h2 className="font-display text-lg font-bold text-foreground">Fase de Grupos</h2>
-        <Badge variant="outline" className="text-gold border-gold/20 text-xs bg-gold/5">
+      {/* Match count header */}
+      <div className="flex items-center justify-between px-4 mt-2 mb-2">
+        <h3 className="font-display text-sm font-bold text-foreground">
+          {selectedGroup === "all" ? "Todos os Jogos" : `Grupo ${selectedGroup}`}
+        </h3>
+        <Badge variant="outline" className="text-gold border-gold/20 text-[10px] bg-gold/5 px-2">
           {filteredMatches.length} jogos
         </Badge>
       </div>
 
       {filteredMatches.length === 0 && (
-        <div className="text-center py-8 text-muted-foreground text-sm">
+        <div className="text-center py-12 text-muted-foreground text-sm px-4">
           Nenhum jogo encontrado para este filtro.
         </div>
       )}
 
-      {filteredMatches.map((match) => (
-        <Drawer key={match.id}>
-          <DrawerTrigger asChild>
-            <button
-              onClick={() => !match.locked && openBet(match)}
-              disabled={match.locked}
-              className={`w-full bg-card rounded-xl p-4 border border-gold/10 hover:border-gold/25 transition-all duration-200 active:scale-[0.98] text-left ${match.locked ? "opacity-70" : ""} ${match.golden ? "ring-1 ring-gold/30 shadow-gold-glow" : ""}`}
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-gold/15 text-gold/70">
-                    {match.group}
-                  </Badge>
-                  <span className="text-xs text-muted-foreground">{match.date} • {match.time}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  {match.golden && <Star className="h-3.5 w-3.5 text-gold fill-gold" />}
-                  {match.locked ? <Lock className="h-3.5 w-3.5 text-muted-foreground" /> : <Clock className="h-3.5 w-3.5 text-gold" />}
-                </div>
-              </div>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <span className="text-2xl">{match.homeFlag}</span>
-                  <span className="font-semibold text-sm text-foreground truncate">{match.home}</span>
-                </div>
-                {match.bet ? (
-                  <div className="flex items-center gap-1 bg-secondary rounded-lg px-3 py-1.5 mx-2 border border-gold/10 shrink-0">
-                    <span className="font-display text-lg font-bold text-foreground">{match.bet.home}</span>
-                    <span className="text-xs text-muted-foreground mx-1">×</span>
-                    <span className="font-display text-lg font-bold text-foreground">{match.bet.away}</span>
-                  </div>
-                ) : (
-                  <div className="mx-2 px-3 py-1.5 rounded-lg bg-gold/10 text-xs text-gold font-medium border border-gold/20 shrink-0">
-                    Apostar
-                  </div>
-                )}
-                <div className="flex items-center gap-2 flex-1 justify-end min-w-0">
-                  <span className="font-semibold text-sm text-foreground truncate">{match.away}</span>
-                  <span className="text-2xl">{match.awayFlag}</span>
-                </div>
-              </div>
-              {match.locked && (
-                <a
-                  href="https://youtube.com/@CaseTv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="flex items-center gap-1 text-xs text-destructive/70 hover:text-destructive mt-2 transition-colors"
-                >
-                  <Youtube className="h-3 w-3" /> Assistir na CazéTV
-                </a>
-              )}
-            </button>
-          </DrawerTrigger>
-
-          {!match.locked && (
-            <DrawerContent className="bg-card border-t border-gold/20">
-              <DrawerHeader className="text-center">
-                <DrawerTitle className="font-display text-lg text-foreground">
-                  {match.homeFlag} {match.home} vs {match.away} {match.awayFlag}
-                </DrawerTitle>
-                <p className="text-xs text-muted-foreground">Grupo {match.group} • {match.date} às {match.time}</p>
-              </DrawerHeader>
-              <div className="px-6 pb-2 space-y-6">
-                <div className="flex items-center justify-center gap-4">
-                  <div className="text-center space-y-2">
-                    <span className="text-3xl">{match.homeFlag}</span>
-                    <Input
-                      type="number"
-                      min="0"
-                      max="20"
-                      value={homeScore}
-                      onChange={(e) => setHomeScore(e.target.value)}
-                      className="w-20 h-14 text-center text-2xl font-display font-bold border border-gold/20 bg-secondary text-foreground focus:border-gold/50"
-                    />
-                  </div>
-                  <span className="text-2xl text-muted-foreground font-display mt-8">×</span>
-                  <div className="text-center space-y-2">
-                    <span className="text-3xl">{match.awayFlag}</span>
-                    <Input
-                      type="number"
-                      min="0"
-                      max="20"
-                      value={awayScore}
-                      onChange={(e) => setAwayScore(e.target.value)}
-                      className="w-20 h-14 text-center text-2xl font-display font-bold border border-gold/20 bg-secondary text-foreground focus:border-gold/50"
-                    />
-                  </div>
-                </div>
-
-                <Button variant="outline" className="w-full border-gold/20 text-gold hover:bg-gold/5" onClick={instantBet}>
-                  <Dices className="mr-2 h-4 w-4" /> Aposta Instantânea
-                </Button>
-
-                <div className="flex items-center justify-between bg-gold/5 rounded-lg px-4 py-3 border border-gold/15">
+      {/* Match Cards */}
+      <div className="space-y-2.5 px-4">
+        {filteredMatches.map((match) => (
+          <Drawer key={match.id}>
+            <DrawerTrigger asChild>
+              <button
+                onClick={() => !match.locked && openBet(match)}
+                disabled={match.locked}
+                className={`w-full rounded-xl p-3.5 border transition-all duration-200 active:scale-[0.98] text-left group ${
+                  match.locked ? "opacity-60" : "hover:border-gold/30"
+                } ${match.golden ? "ring-1 ring-gold/30 shadow-gold-glow border-gold/25" : "border-gold/10"}`}
+                style={{ background: 'hsl(216 60% 25%)' }}
+              >
+                {/* Top row: group badge, date, status */}
+                <div className="flex items-center justify-between mb-2.5">
                   <div className="flex items-center gap-2">
-                    <Star className="h-5 w-5 text-gold fill-gold" />
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">Jogo Dourado</p>
-                      <p className="text-xs text-muted-foreground">Dobra os pontos</p>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-gold/10 text-gold/80 border border-gold/15">
+                      Grupo {match.group}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground">{match.date} • {match.time}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    {match.golden && <Star className="h-3.5 w-3.5 text-gold fill-gold" />}
+                    {match.locked ? (
+                      <Lock className="h-3.5 w-3.5 text-muted-foreground/60" />
+                    ) : (
+                      <Clock className="h-3.5 w-3.5 text-gold/60" />
+                    )}
+                  </div>
+                </div>
+
+                {/* Teams row */}
+                <div className="flex items-center">
+                  {/* Home team */}
+                  <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                    <span className="text-2xl leading-none">{match.homeFlag}</span>
+                    <span className="font-semibold text-sm text-foreground truncate">{match.home}</span>
+                  </div>
+
+                  {/* Score / Bet CTA */}
+                  {match.bet ? (
+                    <div className="flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 mx-1 shrink-0 border border-gold/20" style={{ background: 'hsla(40,40%,55%,0.08)' }}>
+                      <span className="font-display text-lg font-bold text-foreground">{match.bet.home}</span>
+                      <span className="text-[10px] text-muted-foreground mx-0.5">×</span>
+                      <span className="font-display text-lg font-bold text-foreground">{match.bet.away}</span>
+                    </div>
+                  ) : (
+                    <div className="mx-1 px-3 py-1.5 rounded-lg text-[11px] text-gold font-semibold border border-gold/25 shrink-0 group-hover:bg-gold/15 transition-colors" style={{ background: 'hsla(40,40%,55%,0.1)' }}>
+                      Apostar
+                    </div>
+                  )}
+
+                  {/* Away team */}
+                  <div className="flex items-center gap-2.5 flex-1 justify-end min-w-0">
+                    <span className="font-semibold text-sm text-foreground truncate">{match.away}</span>
+                    <span className="text-2xl leading-none">{match.awayFlag}</span>
+                  </div>
+                </div>
+
+                {/* Locked CTA */}
+                {match.locked && (
+                  <a
+                    href="https://youtube.com/@CaseTv"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-1 text-[11px] text-destructive/70 hover:text-destructive mt-2 transition-colors"
+                  >
+                    <Youtube className="h-3 w-3" /> Assistir na CazéTV
+                  </a>
+                )}
+              </button>
+            </DrawerTrigger>
+
+            {!match.locked && (
+              <DrawerContent className="border-t border-gold/20" style={{ background: 'hsl(216 60% 25%)' }}>
+                <DrawerHeader className="text-center">
+                  <DrawerTitle className="font-display text-lg text-foreground">
+                    {match.homeFlag} {match.home} vs {match.away} {match.awayFlag}
+                  </DrawerTitle>
+                  <p className="text-xs text-muted-foreground">Grupo {match.group} • {match.date} às {match.time}</p>
+                </DrawerHeader>
+                <div className="px-6 pb-2 space-y-6">
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="text-center space-y-2">
+                      <span className="text-3xl">{match.homeFlag}</span>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="20"
+                        value={homeScore}
+                        onChange={(e) => setHomeScore(e.target.value)}
+                        className="w-20 h-14 text-center text-2xl font-display font-bold border border-gold/20 bg-secondary text-foreground focus:border-gold/50"
+                      />
+                    </div>
+                    <span className="text-2xl text-muted-foreground font-display mt-8">×</span>
+                    <div className="text-center space-y-2">
+                      <span className="text-3xl">{match.awayFlag}</span>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="20"
+                        value={awayScore}
+                        onChange={(e) => setAwayScore(e.target.value)}
+                        className="w-20 h-14 text-center text-2xl font-display font-bold border border-gold/20 bg-secondary text-foreground focus:border-gold/50"
+                      />
                     </div>
                   </div>
-                  <Switch
-                    checked={isGolden}
-                    onCheckedChange={setIsGolden}
-                    disabled={goldenUsed && !isGolden}
-                  />
+
+                  <Button variant="outline" className="w-full border-gold/20 text-gold hover:bg-gold/5" onClick={instantBet}>
+                    <Dices className="mr-2 h-4 w-4" /> Aposta Instantânea
+                  </Button>
+
+                  <div className="flex items-center justify-between bg-gold/5 rounded-lg px-4 py-3 border border-gold/15">
+                    <div className="flex items-center gap-2">
+                      <Star className="h-5 w-5 text-gold fill-gold" />
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">Jogo Dourado</p>
+                        <p className="text-xs text-muted-foreground">Dobra os pontos</p>
+                      </div>
+                    </div>
+                    <Switch
+                      checked={isGolden}
+                      onCheckedChange={setIsGolden}
+                      disabled={goldenUsed && !isGolden}
+                    />
+                  </div>
+                  {goldenUsed && !isGolden && (
+                    <p className="text-xs text-muted-foreground text-center -mt-4">Já usado em outro jogo desta rodada</p>
+                  )}
                 </div>
-                {goldenUsed && !isGolden && (
-                  <p className="text-xs text-muted-foreground text-center -mt-4">Já usado em outro jogo desta rodada</p>
-                )}
-              </div>
-              <DrawerFooter>
-                <Button variant="hero" size="lg" className="shadow-gold-glow" onClick={saveBet}>
-                  Confirmar Palpite
-                </Button>
-                <DrawerClose asChild>
-                  <Button variant="ghost" className="text-muted-foreground">Cancelar</Button>
-                </DrawerClose>
-              </DrawerFooter>
-            </DrawerContent>
-          )}
-        </Drawer>
-      ))}
+                <DrawerFooter>
+                  <Button variant="hero" size="lg" className="shadow-gold-glow" onClick={saveBet}>
+                    Confirmar Palpite
+                  </Button>
+                  <DrawerClose asChild>
+                    <Button variant="ghost" className="text-muted-foreground">Cancelar</Button>
+                  </DrawerClose>
+                </DrawerFooter>
+              </DrawerContent>
+            )}
+          </Drawer>
+        ))}
+      </div>
     </div>
   );
 };
