@@ -7,7 +7,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Clock, Lock, Star, Youtube, Dices, Trophy, ChevronRight, Search } from "lucide-react";
-import { GROUP_MATCHES, type Match } from "@/data/matches";
+import { GROUP_MATCHES, getFlagUrl, type Match } from "@/data/matches";
+
+const FlagImg = ({ code, size = 40, className = "" }: { code: string; size?: number; className?: string }) => (
+  <img
+    src={getFlagUrl(code, size)}
+    alt=""
+    className={`rounded-sm object-cover shadow-sm ${className}`}
+    style={{ width: size * 0.6, height: size * 0.6 * 0.7 }}
+    loading="lazy"
+  />
+);
 
 const GROUPS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 const ROUNDS = [1, 2, 3];
