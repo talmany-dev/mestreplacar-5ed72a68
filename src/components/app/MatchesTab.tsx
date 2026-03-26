@@ -7,7 +7,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Clock, Lock, Star, Youtube, Dices, Trophy, ChevronRight, Search } from "lucide-react";
-import { GROUP_MATCHES, type Match } from "@/data/matches";
+import { GROUP_MATCHES, getFlagUrl, type Match } from "@/data/matches";
+
+const FlagImg = ({ code, size = 40, className = "" }: { code: string; size?: number; className?: string }) => (
+  <img
+    src={getFlagUrl(code, size)}
+    alt=""
+    className={`rounded-sm object-cover shadow-sm ${className}`}
+    style={{ width: size * 0.6, height: size * 0.6 * 0.7 }}
+    loading="lazy"
+  />
+);
 
 const GROUPS = ["A","B","C","D","E","F","G","H","I","J","K","L"];
 const ROUNDS = [1, 2, 3];
@@ -180,7 +190,7 @@ const MatchesTab = () => {
                 <div className="flex items-center">
                   {/* Home team */}
                   <div className="flex items-center gap-2.5 flex-1 min-w-0">
-                    <span className="text-2xl leading-none">{match.homeFlag}</span>
+                    <FlagImg code={match.homeFlag} size={40} />
                     <span className="font-semibold text-sm text-foreground truncate">{match.home}</span>
                   </div>
 
@@ -200,7 +210,7 @@ const MatchesTab = () => {
                   {/* Away team */}
                   <div className="flex items-center gap-2.5 flex-1 justify-end min-w-0">
                     <span className="font-semibold text-sm text-foreground truncate">{match.away}</span>
-                    <span className="text-2xl leading-none">{match.awayFlag}</span>
+                    <FlagImg code={match.awayFlag} size={40} />
                   </div>
                 </div>
 
@@ -222,15 +232,15 @@ const MatchesTab = () => {
             {!match.locked && (
               <DrawerContent className="border-t border-gold/20" style={{ background: 'hsl(216 60% 25%)' }}>
                 <DrawerHeader className="text-center">
-                  <DrawerTitle className="font-display text-lg text-foreground">
-                    {match.homeFlag} {match.home} vs {match.away} {match.awayFlag}
+                  <DrawerTitle className="font-display text-lg text-foreground flex items-center justify-center gap-2">
+                    <FlagImg code={match.homeFlag} size={32} /> {match.home} vs {match.away} <FlagImg code={match.awayFlag} size={32} />
                   </DrawerTitle>
                   <p className="text-xs text-muted-foreground">Grupo {match.group} • {match.date} às {match.time}</p>
                 </DrawerHeader>
                 <div className="px-6 pb-2 space-y-6">
                   <div className="flex items-center justify-center gap-4">
                     <div className="text-center space-y-2">
-                      <span className="text-3xl">{match.homeFlag}</span>
+                      <FlagImg code={match.homeFlag} size={56} />
                       <Input
                         type="number"
                         min="0"
@@ -242,7 +252,7 @@ const MatchesTab = () => {
                     </div>
                     <span className="text-2xl text-muted-foreground font-display mt-8">×</span>
                     <div className="text-center space-y-2">
-                      <span className="text-3xl">{match.awayFlag}</span>
+                      <FlagImg code={match.awayFlag} size={56} />
                       <Input
                         type="number"
                         min="0"
