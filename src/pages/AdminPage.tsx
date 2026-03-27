@@ -34,9 +34,9 @@ const AdminPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="glassmorphism px-4 py-3 flex items-center gap-3 border-b border-gold/10">
-        <button onClick={() => navigate("/app")} className="text-muted-foreground hover:text-foreground transition-colors">
+    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, hsl(216 70% 15%), hsl(216 67% 28%), hsl(216 60% 20%))" }}>
+      <header className="px-4 py-3 flex items-center gap-3 border-b" style={{ borderColor: "hsl(43 50% 55% / 0.1)", background: "hsl(216 60% 18% / 0.8)", backdropFilter: "blur(12px)" }}>
+        <button onClick={() => navigate("/app")} className="transition-colors" style={{ color: "hsl(216 30% 60%)" }}>
           <ArrowLeft className="h-5 w-5" />
         </button>
         <h1 className="font-display text-lg text-gradient-gold">PAINEL ADMIN</h1>
@@ -46,20 +46,21 @@ const AdminPage = () => {
         {/* Scoring Rules */}
         <section>
           <div className="flex items-center gap-2 mb-3">
-            <Settings2 className="h-4 w-4 text-gold" />
-            <h2 className="font-display text-lg font-bold text-foreground">Regras de Pontuação</h2>
+            <Settings2 className="h-4 w-4" style={{ color: "hsl(43 50% 55%)" }} />
+            <h2 className="font-display text-lg font-bold text-white">Regras de Pontuação</h2>
           </div>
-          <div className="bg-card rounded-xl border border-gold/10 overflow-hidden">
+          <div className="rounded-xl overflow-hidden" style={{ background: "hsl(216 60% 25%)", border: "1px solid hsl(43 50% 55% / 0.1)" }}>
             {SCORING_RULES.map((rule, i) => (
-              <div key={rule.label} className={`flex items-center justify-between px-4 py-3 ${i < SCORING_RULES.length - 1 ? "border-b border-border" : ""}`}>
-                <span className="text-sm text-foreground">{rule.label}</span>
+              <div key={rule.label} className={`flex items-center justify-between px-4 py-3`} style={i < SCORING_RULES.length - 1 ? { borderBottom: "1px solid hsl(216 50% 30%)" } : {}}>
+                <span className="text-sm text-white">{rule.label}</span>
                 <div className="flex items-center gap-2">
                   <Input
                     type="number"
                     defaultValue={rule.pts}
-                    className="w-16 h-8 text-center text-sm font-display font-bold bg-secondary border-gold/10 text-foreground"
+                    className="w-16 h-8 text-center text-sm font-display font-bold text-white border"
+                    style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }}
                   />
-                  <span className="text-xs text-muted-foreground">pts</span>
+                  <span className="text-xs" style={{ color: "hsl(216 30% 55%)" }}>pts</span>
                 </div>
               </div>
             ))}
@@ -69,21 +70,21 @@ const AdminPage = () => {
         {/* Prize */}
         <section>
           <div className="flex items-center gap-2 mb-3">
-            <Gift className="h-4 w-4 text-gold" />
-            <h2 className="font-display text-lg font-bold text-foreground">Premiação</h2>
+            <Gift className="h-4 w-4" style={{ color: "hsl(43 50% 55%)" }} />
+            <h2 className="font-display text-lg font-bold text-white">Premiação</h2>
           </div>
-          <div className="bg-card rounded-xl border border-gold/10 p-4 space-y-3">
+          <div className="rounded-xl p-4 space-y-3" style={{ background: "hsl(216 60% 25%)", border: "1px solid hsl(43 50% 55% / 0.1)" }}>
             <div>
-              <Label className="text-xs text-muted-foreground">1º Lugar</Label>
-              <Input defaultValue="70% do prêmio" className="mt-1 bg-secondary border-gold/10 text-foreground" />
+              <Label className="text-xs" style={{ color: "hsl(216 30% 65%)" }}>1º Lugar</Label>
+              <Input defaultValue="70% do prêmio" className="mt-1 text-white border" style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }} />
             </div>
             <div>
-              <Label className="text-xs text-muted-foreground">2º Lugar</Label>
-              <Input defaultValue="20% do prêmio" className="mt-1 bg-secondary border-gold/10 text-foreground" />
+              <Label className="text-xs" style={{ color: "hsl(216 30% 65%)" }}>2º Lugar</Label>
+              <Input defaultValue="20% do prêmio" className="mt-1 text-white border" style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }} />
             </div>
             <div>
-              <Label className="text-xs text-muted-foreground">3º Lugar</Label>
-              <Input defaultValue="10% do prêmio" className="mt-1 bg-secondary border-gold/10 text-foreground" />
+              <Label className="text-xs" style={{ color: "hsl(216 30% 65%)" }}>3º Lugar</Label>
+              <Input defaultValue="10% do prêmio" className="mt-1 text-white border" style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }} />
             </div>
           </div>
         </section>
@@ -91,12 +92,12 @@ const AdminPage = () => {
         {/* Invite Link */}
         <section>
           <div className="flex items-center gap-2 mb-3">
-            <Users className="h-4 w-4 text-gold" />
-            <h2 className="font-display text-lg font-bold text-foreground">Convite</h2>
+            <Users className="h-4 w-4" style={{ color: "hsl(43 50% 55%)" }} />
+            <h2 className="font-display text-lg font-bold text-white">Convite</h2>
           </div>
-          <div className="bg-card rounded-xl border border-gold/10 p-4">
+          <div className="rounded-xl p-4" style={{ background: "hsl(216 60% 25%)", border: "1px solid hsl(43 50% 55% / 0.1)" }}>
             <div className="flex gap-2">
-              <Input value={inviteLink} readOnly className="text-sm flex-1 bg-secondary border-gold/10 text-foreground" />
+              <Input value={inviteLink} readOnly className="text-sm flex-1 text-white border" style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }} />
               <Button variant="gold" size="icon" onClick={copyLink}>
                 {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
@@ -107,20 +108,20 @@ const AdminPage = () => {
         {/* Members */}
         <section>
           <div className="flex items-center gap-2 mb-3">
-            <Trophy className="h-4 w-4 text-gold" />
-            <h2 className="font-display text-lg font-bold text-foreground">Membros ({MEMBERS.length})</h2>
+            <Trophy className="h-4 w-4" style={{ color: "hsl(43 50% 55%)" }} />
+            <h2 className="font-display text-lg font-bold text-white">Membros ({MEMBERS.length})</h2>
           </div>
-          <div className="bg-card rounded-xl border border-gold/10 overflow-hidden">
+          <div className="rounded-xl overflow-hidden" style={{ background: "hsl(216 60% 25%)", border: "1px solid hsl(43 50% 55% / 0.1)" }}>
             {MEMBERS.map((member, i) => (
-              <div key={member.name} className={`flex items-center justify-between px-4 py-3 ${i < MEMBERS.length - 1 ? "border-b border-border" : ""}`}>
-                <span className="text-sm text-foreground">{member.name}</span>
+              <div key={member.name} className={`flex items-center justify-between px-4 py-3`} style={i < MEMBERS.length - 1 ? { borderBottom: "1px solid hsl(216 50% 30%)" } : {}}>
+                <span className="text-sm text-white">{member.name}</span>
                 {member.status === "pending" ? (
                   <div className="flex gap-1.5">
                     <Button size="sm" variant="gold" className="h-7 text-xs">Aprovar</Button>
                     <Button size="sm" variant="ghost" className="h-7 text-xs text-destructive">Recusar</Button>
                   </div>
                 ) : (
-                  <Badge variant="outline" className="text-xs text-gold border-gold/20 bg-gold/5">Ativo</Badge>
+                  <Badge variant="outline" className="text-xs" style={{ color: "hsl(43 50% 55%)", borderColor: "hsl(43 50% 55% / 0.2)", background: "hsl(43 50% 55% / 0.05)" }}>Ativo</Badge>
                 )}
               </div>
             ))}
