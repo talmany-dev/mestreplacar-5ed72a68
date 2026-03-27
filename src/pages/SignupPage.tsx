@@ -18,38 +18,47 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative">
-      <div className="absolute inset-0 bg-radial-glow" />
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative"
+      style={{ background: "linear-gradient(135deg, hsl(216 70% 15%), hsl(216 67% 28%), hsl(216 60% 20%))" }}>
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full opacity-10"
+          style={{ background: "radial-gradient(circle, hsl(43 50% 55%), transparent)" }} />
+        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full opacity-8"
+          style={{ background: "radial-gradient(circle, hsl(216 70% 40%), transparent)" }} />
+      </div>
       <div className="w-full max-w-sm relative">
         <div className="text-center mb-8">
-          <img src={logo} alt="Mestre do Placar" className="h-20 w-20 mx-auto mb-4 rounded-xl" />
-          <h1 className="font-display text-2xl font-bold text-foreground">Criar Conta</h1>
-          <p className="text-sm text-muted-foreground mt-1">Entre na resenha da Copa 2026</p>
+          <img src={logo} alt="Mestre do Placar" className="h-20 w-20 mx-auto mb-4 rounded-xl shadow-lg" />
+          <h1 className="font-display text-2xl font-bold text-white">Criar Conta</h1>
+          <p className="text-sm mt-1" style={{ color: "hsl(216 30% 70%)" }}>Entre na resenha da Copa 2026</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name" className="text-muted-foreground text-sm">Nome</Label>
+            <Label htmlFor="name" className="text-sm" style={{ color: "hsl(216 30% 70%)" }}>Nome</Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: "hsl(216 30% 55%)" }} />
               <Input id="name" placeholder="Seu nome" value={name} onChange={(e) => setName(e.target.value)}
-                className="pl-10 bg-secondary border-gold/10 text-foreground placeholder:text-muted-foreground focus:border-gold/40" />
+                className="pl-10 text-white placeholder:opacity-40 border"
+                style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }} />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-muted-foreground text-sm">E-mail</Label>
+            <Label htmlFor="email" className="text-sm" style={{ color: "hsl(216 30% 70%)" }}>E-mail</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: "hsl(216 30% 55%)" }} />
               <Input id="email" type="email" placeholder="seu@email.com" value={email} onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 bg-secondary border-gold/10 text-foreground placeholder:text-muted-foreground focus:border-gold/40" />
+                className="pl-10 text-white placeholder:opacity-40 border"
+                style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }} />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-muted-foreground text-sm">Senha</Label>
+            <Label htmlFor="password" className="text-sm" style={{ color: "hsl(216 30% 70%)" }}>Senha</Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4" style={{ color: "hsl(216 30% 55%)" }} />
               <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 bg-secondary border-gold/10 text-foreground placeholder:text-muted-foreground focus:border-gold/40" />
+                className="pl-10 text-white placeholder:opacity-40 border"
+                style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }} />
             </div>
           </div>
           <Button variant="hero" className="w-full shadow-gold-glow" size="lg" type="submit">
@@ -57,11 +66,11 @@ const SignupPage = () => {
           </Button>
         </form>
 
-        <p className="text-center text-sm text-muted-foreground mt-6">
+        <p className="text-center text-sm mt-6" style={{ color: "hsl(216 30% 65%)" }}>
           Já tem conta?{" "}
-          <button onClick={() => navigate("/login")} className="text-gold hover:underline font-medium">Entrar</button>
+          <button onClick={() => navigate("/login")} className="hover:underline font-medium" style={{ color: "hsl(43 50% 55%)" }}>Entrar</button>
         </p>
-        <button onClick={() => navigate("/")} className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground mx-auto mt-4 transition-colors">
+        <button onClick={() => navigate("/")} className="flex items-center gap-1 text-xs mx-auto mt-4 transition-colors hover:text-white" style={{ color: "hsl(216 30% 55%)" }}>
           <ArrowLeft className="h-3 w-3" /> Voltar
         </button>
       </div>
