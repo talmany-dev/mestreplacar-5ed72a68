@@ -23,8 +23,6 @@ const SignupPage = () => {
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full opacity-10"
           style={{ background: "radial-gradient(circle, hsl(43 50% 55%), transparent)" }} />
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full opacity-8"
-          style={{ background: "radial-gradient(circle, hsl(216 70% 40%), transparent)" }} />
       </div>
       <div className="w-full max-w-sm relative">
         <div className="text-center mb-8">
