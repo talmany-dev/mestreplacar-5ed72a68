@@ -19,7 +19,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen" style={{ background: "linear-gradient(135deg, hsl(216 70% 15%), hsl(216 67% 28%), hsl(216 60% 20%))" }}>
       {/* Header — glassmorphism */}
       <header className="sticky top-0 z-50 glassmorphism border-b border-gold/10">
         <div className="container flex items-center justify-between h-16">
