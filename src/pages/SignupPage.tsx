@@ -24,7 +24,6 @@ const SignupPage = () => {
         <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full opacity-10"
           style={{ background: "radial-gradient(circle, hsl(43 50% 55%), transparent)" }} />
       </div>
-      </div>
       <div className="w-full max-w-sm relative">
         <div className="text-center mb-8">
           <img src={logo} alt="Mestre do Placar" className="h-20 w-20 mx-auto mb-4 rounded-xl shadow-lg" />
