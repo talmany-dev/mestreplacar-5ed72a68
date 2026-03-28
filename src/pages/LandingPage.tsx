@@ -42,7 +42,7 @@ const LandingPage = () => {
           <div className="absolute inset-0 bg-background/60" />
         </div>
         <div className="absolute inset-0 bg-radial-glow" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent shadow-[0_0_8px_hsla(40,40%,55%,0.3)]" />
         <div className="container relative">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Left — text */}
@@ -93,6 +93,7 @@ const LandingPage = () => {
       {/* World Cup Summary */}
       <section className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-radial-glow-bottom" />
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent shadow-[0_0_8px_hsla(40,40%,55%,0.3)]" />
         <div className="container relative">
           <ScrollReveal>
             <div className="text-center mb-12">
@@ -127,7 +128,7 @@ const LandingPage = () => {
       {/* How It Works */}
       <section id="como-funciona" className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-radial-glow" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent shadow-[0_0_8px_hsla(40,40%,55%,0.3)]" />
         <div className="container relative">
           <ScrollReveal>
             <div className="text-center mb-12">
@@ -158,7 +159,7 @@ const LandingPage = () => {
 
       {/* Why Mestre do Placar */}
       <section className="py-16 md:py-24 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent shadow-[0_0_8px_hsla(40,40%,55%,0.3)]" />
         <div className="container relative">
           <ScrollReveal>
             <div className="text-center mb-10">
@@ -192,7 +193,7 @@ const LandingPage = () => {
 
       {/* Scoring Table */}
       <section className="py-16 md:py-24 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent shadow-[0_0_8px_hsla(40,40%,55%,0.3)]" />
         <div className="container max-w-2xl relative">
           <ScrollReveal>
             <div className="text-center mb-10">
@@ -234,7 +235,7 @@ const LandingPage = () => {
       {/* Pricing */}
       <section className="py-16 md:py-24 relative">
         <div className="absolute inset-0 bg-radial-glow" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent shadow-[0_0_8px_hsla(40,40%,55%,0.3)]" />
         <div className="container max-w-3xl relative">
           <ScrollReveal>
             <div className="text-center mb-12">
@@ -287,7 +288,7 @@ const LandingPage = () => {
 
       {/* FAQ */}
       <section className="py-16 md:py-24 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/40 to-transparent shadow-[0_0_8px_hsla(40,40%,55%,0.3)]" />
         <div className="container max-w-2xl relative">
           <ScrollReveal>
             <div className="text-center mb-10">
