@@ -14,6 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
+      pool_members: {
+        Row: {
+          id: string
+          joined_at: string
+          pool_id: string
+          role: Database["public"]["Enums"]["pool_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          pool_id: string
+          role?: Database["public"]["Enums"]["pool_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          pool_id?: string
+          role?: Database["public"]["Enums"]["pool_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pool_members_pool_id_fkey"
+            columns: ["pool_id"]
+            isOneToOne: false
+            referencedRelation: "pools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pool_members_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pools: {
+        Row: {
+          access_password: string
+          created_at: string
+          id: string
+          join_code: string
+          max_players: number
+          name: string
+          owner_id: string
+          prize_info: string | null
+          scoring_config: Json
+          updated_at: string
+        }
+        Insert: {
+          access_password: string
+          created_at?: string
+          id?: string
+          join_code: string
+          max_players?: number
+          name: string
+          owner_id: string
+          prize_info?: string | null
+          scoring_config?: Json
+          updated_at?: string
+        }
+        Update: {
+          access_password?: string
+          created_at?: string
+          id?: string
+          join_code?: string
+          max_players?: number
+          name?: string
+          owner_id?: string
+          prize_info?: string | null
+          scoring_config?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pools_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -43,7 +129,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      pool_role: "admin" | "player"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -170,6 +256,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      pool_role: ["admin", "player"],
+    },
   },
 } as const
