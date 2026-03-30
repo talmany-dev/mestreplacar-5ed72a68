@@ -11,6 +11,8 @@ import { toast } from "@/hooks/use-toast";
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectParam = searchParams.get("redirect");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
