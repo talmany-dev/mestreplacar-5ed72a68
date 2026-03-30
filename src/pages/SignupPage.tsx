@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import logo from "@/assets/logo.png";
@@ -10,6 +11,8 @@ import { toast } from "@/hooks/use-toast";
 
 const SignupPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectParam = searchParams.get("redirect");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -91,7 +94,7 @@ const SignupPage = () => {
 
         <p className="text-center text-sm mt-6" style={{ color: "hsl(216 30% 65%)" }}>
           Já tem conta?{" "}
-          <button onClick={() => navigate("/login")} className="hover:underline font-medium" style={{ color: "hsl(43 50% 55%)" }}>Entrar</button>
+          <button onClick={() => navigate(`/login${redirectParam ? `?redirect=${redirectParam}` : ""}`)} className="hover:underline font-medium" style={{ color: "hsl(43 50% 55%)" }}>Entrar</button>
         </p>
         <button onClick={() => navigate("/")} className="flex items-center gap-1 text-xs mx-auto mt-4 transition-colors hover:text-white" style={{ color: "hsl(216 30% 55%)" }}>
           <ArrowLeft className="h-3 w-3" /> Voltar
