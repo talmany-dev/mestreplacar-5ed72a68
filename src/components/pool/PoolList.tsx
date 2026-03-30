@@ -151,6 +151,16 @@ const PoolList = ({ refreshKey }: PoolListProps) => {
                   <Button
                     variant="ghost"
                     size="icon"
+                    className="h-8 w-8 text-muted-foreground hover:text-accent"
+                    onClick={() => navigate(`/admin/${pool.id}`)}
+                  >
+                    <Settings2 className="h-3.5 w-3.5" />
+                  </Button>
+                )}
+                {pool.role === "admin" && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     className="h-8 w-8 text-muted-foreground hover:text-destructive"
                     onClick={() => deletePool(pool.id)}
                   >
