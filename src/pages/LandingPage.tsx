@@ -63,7 +63,7 @@ const LandingPage = () => {
               </ScrollReveal>
               <ScrollReveal delay={200}>
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                  <Button variant="hero" size="xl" className="shadow-gold-glow" onClick={() => navigate("/signup")}>
+                  <Button variant="hero" size="xl" className="shadow-gold-glow" onClick={() => navigate("/signup?redirect=/create-pool")}>
                     <Trophy className="mr-2 h-5 w-5" />
                     Criar Meu Bolão
                   </Button>
