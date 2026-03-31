@@ -43,9 +43,9 @@ const SignupPage = () => {
 
     toast({
       title: "Conta criada!",
-      description: "Verifique seu e-mail para confirmar o cadastro.",
+      description: "Bem-vindo ao Mestre do Placar!",
     });
-    setLoading(false);
+    navigate(redirectParam ? redirectParam : "/app");
   };
 
   return (
