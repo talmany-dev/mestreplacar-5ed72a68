@@ -47,7 +47,7 @@ const AppPage = () => {
         </div>
 
         {/* Bottom tabs */}
-        <TabsList className="shrink-0 h-16 bg-card border-t border-gold/10 rounded-none grid grid-cols-4 gap-0 p-0">
+        <TabsList className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-card border-t border-gold/10 rounded-none grid grid-cols-4 gap-0 p-0">
           {[
             { value: "matches", icon: Calendar, label: "Jogos" },
             { value: "ranking", icon: Trophy, label: "Ranking" },
