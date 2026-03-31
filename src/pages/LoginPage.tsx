@@ -13,7 +13,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/app";
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(searchParams.get("email") || "");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +27,7 @@ const LoginPage = () => {
       toast({
         title: "Erro ao entrar",
         description: error.message === "Invalid login credentials"
-          ? "E-mail ou senha incorretos."
+          ? "E-mail ou senha incorretos. Se precisar, redefina sua senha."
           : error.message,
         variant: "destructive",
       });
@@ -66,6 +66,16 @@ const LoginPage = () => {
               <Input id="password" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} required
                 className="pl-10 text-white placeholder:opacity-40 border"
                 style={{ background: "hsl(216 60% 22%)", borderColor: "hsl(43 50% 55% / 0.15)" }} />
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => navigate(`/reset-password${email ? `?email=${encodeURIComponent(email)}` : ""}`)}
+                className="text-xs transition-colors hover:underline"
+                style={{ color: "hsl(43 50% 55%)" }}
+              >
+                Esqueci minha senha
+              </button>
             </div>
           </div>
           <Button variant="hero" className="w-full shadow-gold-glow" size="lg" type="submit" disabled={loading}>
