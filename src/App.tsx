@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 import SignupPage from "./pages/SignupPage";
 import AppPage from "./pages/AppPage";
 import AdminPage from "./pages/AdminPage";
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/app" element={<ProtectedRoute><AppPage /></ProtectedRoute>} />
             <Route path="/admin/:poolId" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />

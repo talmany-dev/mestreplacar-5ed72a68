@@ -32,6 +32,19 @@ const SignupPage = () => {
     });
 
     if (error) {
+      const normalizedMessage = error.message.toLowerCase();
+
+      if (normalizedMessage.includes("already registered")) {
+        toast({
+          title: "Esse e-mail já está cadastrado",
+          description: "Faça login ou redefina sua senha para continuar.",
+          variant: "destructive",
+        });
+        setLoading(false);
+        navigate(`/login?email=${encodeURIComponent(email)}${redirectParam ? `&redirect=${encodeURIComponent(redirectParam)}` : ""}`);
+        return;
+      }
+
       toast({
         title: "Erro ao criar conta",
         description: error.message,
