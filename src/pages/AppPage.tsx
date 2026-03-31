@@ -39,7 +39,7 @@ const AppPage = () => {
 
       {/* Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto pb-16">
           <TabsContent value="matches" className="mt-0 h-full"><MatchesTab /></TabsContent>
           <TabsContent value="ranking" className="mt-0 h-full"><RankingTab /></TabsContent>
           <TabsContent value="chat" className="mt-0 h-full"><ChatTab /></TabsContent>
