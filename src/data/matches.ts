@@ -17,9 +17,9 @@ const FLAGS: Record<string, string> = {
   "México": "mx",
   "África do Sul": "za",
   "Coréia do Sul": "kr",
-  "Europa 4": "eu",
+  "República Tcheca": "cz",
   "Canadá": "ca",
-  "Europa 1": "eu",
+  "Bósnia": "ba",
   "Catar": "qa",
   "Suíça": "ch",
   "Brasil": "br",
@@ -29,14 +29,14 @@ const FLAGS: Record<string, string> = {
   "Estados Unidos": "us",
   "Paraguai": "py",
   "Austrália": "au",
-  "Europa 3": "eu",
+  "Turquia": "tr",
   "Alemanha": "de",
   "Curaçao": "cw",
   "Costa do Marfim": "ci",
   "Equador": "ec",
   "Holanda": "nl",
   "Japão": "jp",
-  "Europa 2": "eu",
+  "Suécia": "se",
   "Tunísia": "tn",
   "Bélgica": "be",
   "Egito": "eg",
@@ -48,14 +48,14 @@ const FLAGS: Record<string, string> = {
   "Uruguai": "uy",
   "França": "fr",
   "Senegal": "sn",
-  "Intercontinental 2": "un",
+  "Iraque": "iq",
   "Noruega": "no",
   "Áustria": "at",
   "Jordânia": "jo",
   "Argentina": "ar",
   "Argélia": "dz",
   "Portugal": "pt",
-  "Intercontinental 1": "un",
+  "RD Congo": "cd",
   "Uzbequistão": "uz",
   "Colômbia": "co",
   "Inglaterra": "gb-eng",
@@ -96,23 +96,23 @@ let id = 1;
 export const GROUP_MATCHES: Match[] = [
   // GRUPO A - Rodada 1
   makeMatch(id++, "11/06/2026 - 16:00", "México", "África do Sul", "A", 1),
-  makeMatch(id++, "11/06/2026 - 23:00", "Coréia do Sul", "Europa 4", "A", 1),
+  makeMatch(id++, "11/06/2026 - 23:00", "Coréia do Sul", "República Tcheca", "A", 1),
   // GRUPO A - Rodada 2
-  makeMatch(id++, "18/06/2026 - 13:00", "Europa 4", "África do Sul", "A", 2),
+  makeMatch(id++, "18/06/2026 - 13:00", "República Tcheca", "África do Sul", "A", 2),
   makeMatch(id++, "18/06/2026 - 22:00", "México", "Coréia do Sul", "A", 2),
   // GRUPO A - Rodada 3
-  makeMatch(id++, "24/06/2026 - 22:00", "Europa 4", "México", "A", 3),
+  makeMatch(id++, "24/06/2026 - 22:00", "República Tcheca", "México", "A", 3),
   makeMatch(id++, "24/06/2026 - 22:00", "África do Sul", "Coréia do Sul", "A", 3),
 
   // GRUPO B - Rodada 1
-  makeMatch(id++, "12/06/2026 - 16:00", "Canadá", "Europa 1", "B", 1),
+  makeMatch(id++, "12/06/2026 - 16:00", "Canadá", "Bósnia", "B", 1),
   makeMatch(id++, "13/06/2026 - 16:00", "Catar", "Suíça", "B", 1),
   // GRUPO B - Rodada 2
-  makeMatch(id++, "18/06/2026 - 16:00", "Suíça", "Europa 1", "B", 2),
+  makeMatch(id++, "18/06/2026 - 16:00", "Suíça", "Bósnia", "B", 2),
   makeMatch(id++, "18/06/2026 - 19:00", "Canadá", "Catar", "B", 2),
   // GRUPO B - Rodada 3
   makeMatch(id++, "24/06/2026 - 16:00", "Suíça", "Canadá", "B", 3),
-  makeMatch(id++, "24/06/2026 - 16:00", "Europa 1", "Catar", "B", 3),
+  makeMatch(id++, "24/06/2026 - 16:00", "Bósnia", "Catar", "B", 3),
 
   // GRUPO C - Rodada 1
   makeMatch(id++, "13/06/2026 - 19:00", "Brasil", "Marrocos", "C", 1),
@@ -126,12 +126,12 @@ export const GROUP_MATCHES: Match[] = [
 
   // GRUPO D - Rodada 1
   makeMatch(id++, "12/06/2026 - 22:00", "Estados Unidos", "Paraguai", "D", 1),
-  makeMatch(id++, "14/06/2026 - 01:00", "Austrália", "Europa 3", "D", 1),
+  makeMatch(id++, "14/06/2026 - 01:00", "Austrália", "Turquia", "D", 1),
   // GRUPO D - Rodada 2
-  makeMatch(id++, "20/06/2026 - 01:00", "Europa 3", "Paraguai", "D", 2),
+  makeMatch(id++, "20/06/2026 - 01:00", "Turquia", "Paraguai", "D", 2),
   makeMatch(id++, "19/06/2026 - 16:00", "Estados Unidos", "Austrália", "D", 2),
   // GRUPO D - Rodada 3
-  makeMatch(id++, "25/06/2026 - 23:00", "Europa 3", "Estados Unidos", "D", 3),
+  makeMatch(id++, "25/06/2026 - 23:00", "Turquia", "Estados Unidos", "D", 3),
   makeMatch(id++, "25/06/2026 - 23:00", "Paraguai", "Austrália", "D", 3),
 
   // GRUPO E - Rodada 1
@@ -146,12 +146,12 @@ export const GROUP_MATCHES: Match[] = [
 
   // GRUPO F - Rodada 1
   makeMatch(id++, "14/06/2026 - 17:00", "Holanda", "Japão", "F", 1),
-  makeMatch(id++, "14/06/2026 - 23:00", "Europa 2", "Tunísia", "F", 1),
+  makeMatch(id++, "14/06/2026 - 23:00", "Suécia", "Tunísia", "F", 1),
   // GRUPO F - Rodada 2
   makeMatch(id++, "21/06/2026 - 01:00", "Tunísia", "Japão", "F", 2),
-  makeMatch(id++, "20/06/2026 - 14:00", "Holanda", "Europa 2", "F", 2),
+  makeMatch(id++, "20/06/2026 - 14:00", "Holanda", "Suécia", "F", 2),
   // GRUPO F - Rodada 3
-  makeMatch(id++, "25/06/2026 - 20:00", "Japão", "Europa 2", "F", 3),
+  makeMatch(id++, "25/06/2026 - 20:00", "Japão", "Suécia", "F", 3),
   makeMatch(id++, "25/06/2026 - 20:00", "Tunísia", "Holanda", "F", 3),
 
   // GRUPO G - Rodada 1
@@ -176,13 +176,13 @@ export const GROUP_MATCHES: Match[] = [
 
   // GRUPO I - Rodada 1
   makeMatch(id++, "16/06/2026 - 16:00", "França", "Senegal", "I", 1),
-  makeMatch(id++, "16/06/2026 - 19:00", "Intercontinental 2", "Noruega", "I", 1),
+  makeMatch(id++, "16/06/2026 - 19:00", "Iraque", "Noruega", "I", 1),
   // GRUPO I - Rodada 2
-  makeMatch(id++, "22/06/2026 - 18:00", "França", "Intercontinental 2", "I", 2),
+  makeMatch(id++, "22/06/2026 - 18:00", "França", "Iraque", "I", 2),
   makeMatch(id++, "22/06/2026 - 21:00", "Noruega", "Senegal", "I", 2),
   // GRUPO I - Rodada 3
   makeMatch(id++, "26/06/2026 - 16:00", "Noruega", "França", "I", 3),
-  makeMatch(id++, "26/06/2026 - 16:00", "Senegal", "Intercontinental 2", "I", 3),
+  makeMatch(id++, "26/06/2026 - 16:00", "Senegal", "Iraque", "I", 3),
 
   // GRUPO J - Rodada 1
   makeMatch(id++, "17/06/2026 - 01:00", "Áustria", "Jordânia", "J", 1),
@@ -195,14 +195,14 @@ export const GROUP_MATCHES: Match[] = [
   makeMatch(id++, "27/06/2026 - 23:00", "Jordânia", "Argentina", "J", 3),
 
   // GRUPO K - Rodada 1
-  makeMatch(id++, "17/06/2026 - 14:00", "Portugal", "Intercontinental 1", "K", 1),
+  makeMatch(id++, "17/06/2026 - 14:00", "Portugal", "RD Congo", "K", 1),
   makeMatch(id++, "17/06/2026 - 23:00", "Uzbequistão", "Colômbia", "K", 1),
   // GRUPO K - Rodada 2
   makeMatch(id++, "23/06/2026 - 14:00", "Portugal", "Uzbequistão", "K", 2),
-  makeMatch(id++, "23/06/2026 - 23:00", "Colômbia", "Intercontinental 1", "K", 2),
+  makeMatch(id++, "23/06/2026 - 23:00", "Colômbia", "RD Congo", "K", 2),
   // GRUPO K - Rodada 3
   makeMatch(id++, "27/06/2026 - 20:30", "Colômbia", "Portugal", "K", 3),
-  makeMatch(id++, "27/06/2026 - 20:30", "Intercontinental 1", "Uzbequistão", "K", 3),
+  makeMatch(id++, "27/06/2026 - 20:30", "RD Congo", "Uzbequistão", "K", 3),
 
   // GRUPO L - Rodada 1
   makeMatch(id++, "17/06/2026 - 17:00", "Inglaterra", "Croácia", "L", 1),
