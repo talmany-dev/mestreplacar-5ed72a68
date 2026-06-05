@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Trophy, Users, Copy, Check, Trash2, Settings2 } from "lucide-react";
+import { Trophy, Users, Copy, Check, Trash2, Settings2, QrCode } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { formatFee, buildInviteUrl } from "@/lib/pool-tiers";
@@ -19,6 +19,7 @@ interface Pool {
   owner_id: string;
   member_count?: number;
   role?: string;
+  payment_status?: string;
 }
 
 interface PoolListProps {
@@ -38,7 +39,7 @@ const PoolList = ({ refreshKey }: PoolListProps) => {
 
     const { data: memberships } = await supabase
       .from("pool_members")
-      .select("pool_id, role")
+      .select("pool_id, role, payment_status")
       .eq("user_id", user.id);
 
     if (!memberships?.length) {
@@ -55,7 +56,6 @@ const PoolList = ({ refreshKey }: PoolListProps) => {
       .in("id", poolIds);
 
     if (poolsData) {
-      // Get member counts
       const poolsWithMeta = await Promise.all(
         poolsData.map(async (pool) => {
           const { count } = await supabase
@@ -64,7 +64,12 @@ const PoolList = ({ refreshKey }: PoolListProps) => {
             .eq("pool_id", pool.id);
 
           const membership = memberships.find((m) => m.pool_id === pool.id);
-          return { ...pool, member_count: count ?? 0, role: membership?.role };
+          return {
+            ...pool,
+            member_count: count ?? 0,
+            role: membership?.role,
+            payment_status: membership?.payment_status,
+          };
         })
       );
       setPools(poolsWithMeta);
@@ -125,13 +130,32 @@ const PoolList = ({ refreshKey }: PoolListProps) => {
                   <p className="text-xs text-muted-foreground mt-0.5">{pool.prize_info}</p>
                 )}
               </div>
-              <Badge
-                variant="outline"
-                className="text-xs border-accent/20 text-accent bg-accent/5"
-              >
-                {pool.role === "admin" ? "Admin" : "Jogador"}
-              </Badge>
+              <div className="flex flex-col items-end gap-1">
+                <Badge
+                  variant="outline"
+                  className="text-xs border-accent/20 text-accent bg-accent/5"
+                >
+                  {pool.role === "admin" ? "Admin" : "Jogador"}
+                </Badge>
+                {pool.payment_status === "pending" && (
+                  <Badge variant="outline" className="text-[10px] border-destructive/40 text-destructive bg-destructive/10">
+                    Pagamento pendente
+                  </Badge>
+                )}
+              </div>
             </div>
+
+            {pool.payment_status === "pending" && (
+              <Button
+                variant="hero"
+                size="sm"
+                className="w-full mt-2 mb-1"
+                onClick={() => navigate(`/pay/${pool.id}`)}
+              >
+                <QrCode className="h-3.5 w-3.5 mr-1.5" />
+                Finalizar pagamento Pix
+              </Button>
+            )}
 
             <div className="flex items-center justify-between mt-3">
               <div className="flex items-center gap-3 text-xs text-muted-foreground">

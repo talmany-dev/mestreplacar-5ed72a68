@@ -64,11 +64,15 @@ const JoinPoolPage = () => {
       if (user) {
         const { data: m } = await supabase
           .from("pool_members")
-          .select("id")
+          .select("id, payment_status")
           .eq("pool_id", data.id)
           .eq("user_id", user.id)
           .maybeSingle();
         setAlreadyMember(!!m);
+        if (m && m.payment_status === "pending") {
+          navigate(`/pay/${data.id}`, { replace: true });
+          return;
+        }
       }
       setLoading(false);
     })();
