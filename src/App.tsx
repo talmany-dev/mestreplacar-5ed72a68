@@ -13,6 +13,7 @@ import AppPage from "./pages/AppPage";
 import AdminPage from "./pages/AdminPage";
 import CreatePoolPage from "./pages/CreatePoolPage";
 import JoinPoolPage from "./pages/JoinPoolPage";
+import PaywallPage from "./pages/PaywallPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/app" element={<ProtectedRoute><AppPage /></ProtectedRoute>} />
             <Route path="/admin/:poolId" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
             <Route path="/create-pool" element={<ProtectedRoute><CreatePoolPage /></ProtectedRoute>} />
+            <Route path="/pay/:poolId" element={<ProtectedRoute><PaywallPage /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

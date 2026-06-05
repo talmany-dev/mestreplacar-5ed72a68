@@ -93,14 +93,15 @@ const JoinPoolPage = () => {
       pool_id: pool.id,
       user_id: user.id,
       role: "player" as const,
+      payment_status: "pending",
     });
     setJoining(false);
     if (error) {
       toast({ title: "Erro ao entrar", description: error.message, variant: "destructive" });
       return;
     }
-    toast({ title: `Bem-vindo ao ${pool.name}! 🎉` });
-    navigate("/app");
+    toast({ title: `Vaga reservada em ${pool.name}!`, description: "Finalize o Pix para liberar seus palpites." });
+    navigate(`/pay/${pool.id}`);
   };
 
   if (loading || authLoading) {

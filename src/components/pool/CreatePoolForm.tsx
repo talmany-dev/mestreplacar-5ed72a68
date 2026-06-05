@@ -69,6 +69,7 @@ const CreatePoolForm = ({ onCreated }: CreatePoolFormProps) => {
       pool_id: created.id,
       user_id: user.id,
       role: "admin" as const,
+      payment_status: "exempt",
     });
 
     toast({
