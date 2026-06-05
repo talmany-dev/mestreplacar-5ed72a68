@@ -18,22 +18,31 @@ export type Database = {
         Row: {
           id: string
           joined_at: string
+          paid_at: string | null
+          payment_status: string
           pool_id: string
           role: Database["public"]["Enums"]["pool_role"]
+          stripe_session_id: string | null
           user_id: string
         }
         Insert: {
           id?: string
           joined_at?: string
+          paid_at?: string | null
+          payment_status?: string
           pool_id: string
           role?: Database["public"]["Enums"]["pool_role"]
+          stripe_session_id?: string | null
           user_id: string
         }
         Update: {
           id?: string
           joined_at?: string
+          paid_at?: string | null
+          payment_status?: string
           pool_id?: string
           role?: Database["public"]["Enums"]["pool_role"]
+          stripe_session_id?: string | null
           user_id?: string
         }
         Relationships: [
