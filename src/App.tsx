@@ -12,6 +12,7 @@ import SignupPage from "./pages/SignupPage";
 import AppPage from "./pages/AppPage";
 import AdminPage from "./pages/AdminPage";
 import CreatePoolPage from "./pages/CreatePoolPage";
+import JoinPoolPage from "./pages/JoinPoolPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/login" element={<LoginPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/join/:code" element={<JoinPoolPage />} />
             <Route path="/app" element={<ProtectedRoute><AppPage /></ProtectedRoute>} />
             <Route path="/admin/:poolId" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
             <Route path="/create-pool" element={<ProtectedRoute><CreatePoolPage /></ProtectedRoute>} />

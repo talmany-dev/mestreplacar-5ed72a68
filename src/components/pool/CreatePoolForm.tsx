@@ -5,7 +5,9 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { Settings2, Gift, Lock, Users, Trophy } from "lucide-react";
+import { Settings2, Gift, Users, Trophy, Check } from "lucide-react";
+import { POOL_TIERS, type PoolTier } from "@/lib/pool-tiers";
+import { cn } from "@/lib/utils";
 
 const generateJoinCode = () => {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -21,8 +23,7 @@ const CreatePoolForm = ({ onCreated }: CreatePoolFormProps) => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [maxPlayers, setMaxPlayers] = useState(50);
+  const [tier, setTier] = useState<PoolTier>("tier_50");
   const [prizeInfo, setPrizeInfo] = useState("");
   const [scoring, setScoring] = useState({
     exact_score: 25,
@@ -34,40 +35,45 @@ const CreatePoolForm = ({ onCreated }: CreatePoolFormProps) => {
 
   const handleCreate = async () => {
     if (!user) return;
-    if (!name.trim() || !password.trim()) {
-      toast({ title: "Preencha o nome e a senha do bolão", variant: "destructive" });
+    if (!name.trim()) {
+      toast({ title: "Dê um nome ao seu bolão", variant: "destructive" });
       return;
     }
 
     setLoading(true);
     const joinCode = generateJoinCode();
+    const tierConfig = POOL_TIERS.find((t) => t.id === tier)!;
 
-    const { error } = await supabase.from("pools").insert({
-      owner_id: user.id,
-      name: name.trim(),
-      access_password: password.trim(),
-      prize_info: prizeInfo.trim() || null,
-      max_players: maxPlayers,
-      join_code: joinCode,
-      scoring_config: scoring,
-    });
+    const { data: created, error } = await supabase
+      .from("pools")
+      .insert({
+        owner_id: user.id,
+        name: name.trim(),
+        prize_info: prizeInfo.trim() || null,
+        max_players: tierConfig.maxPlayers,
+        tier: tierConfig.id,
+        entry_fee_cents: tierConfig.entryFeeCents,
+        join_code: joinCode,
+        scoring_config: scoring,
+      })
+      .select("id")
+      .single();
 
-    if (error) {
-      toast({ title: "Erro ao criar bolão", description: error.message, variant: "destructive" });
+    if (error || !created) {
+      toast({ title: "Erro ao criar bolão", description: error?.message, variant: "destructive" });
       setLoading(false);
       return;
     }
 
-    // Add creator as admin member
     await supabase.from("pool_members").insert({
-      pool_id: (await supabase.from("pools").select("id").eq("join_code", joinCode).single()).data?.id,
+      pool_id: created.id,
       user_id: user.id,
       role: "admin" as const,
     });
 
     toast({
-      title: "Bolão criado com sucesso! 🎉",
-      description: `Código de convite: ${joinCode}`,
+      title: "Bolão criado! 🎉",
+      description: `Compartilhe o link de convite com a galera.`,
     });
 
     onCreated();
@@ -89,35 +95,60 @@ const CreatePoolForm = ({ onCreated }: CreatePoolFormProps) => {
           <Trophy className="h-4 w-4 text-accent" />
           <h2 className="font-display text-lg font-bold text-foreground">Informações do Bolão</h2>
         </div>
-        <div className="rounded-xl p-4 space-y-3 bg-secondary border border-accent/10">
-          <div>
-            <Label className="text-xs text-muted-foreground">Nome do Bolão</Label>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Ex: Bolão da Copa 2026"
-              className="mt-1 text-foreground bg-primary border-accent/15"
-            />
-          </div>
-          <div>
-            <Label className="text-xs text-muted-foreground">Senha de Acesso</Label>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Senha para entrar no bolão"
-              className="mt-1 text-foreground bg-primary border-accent/15"
-            />
-          </div>
-          <div>
-            <Label className="text-xs text-muted-foreground">Limite de Participantes</Label>
-            <Input
-              type="number"
-              value={maxPlayers}
-              onChange={(e) => setMaxPlayers(Number(e.target.value))}
-              className="mt-1 text-foreground bg-primary border-accent/15"
-            />
-          </div>
+        <div className="rounded-xl p-4 bg-secondary border border-accent/10">
+          <Label className="text-xs text-muted-foreground">Nome do Bolão</Label>
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Ex: Bolão da Copa 2026"
+            className="mt-1 text-foreground bg-primary border-accent/15"
+          />
+        </div>
+      </section>
+
+      {/* Tier selection */}
+      <section>
+        <div className="flex items-center gap-2 mb-3">
+          <Users className="h-4 w-4 text-accent" />
+          <h2 className="font-display text-lg font-bold text-foreground">Tamanho da Sala</h2>
+        </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          A taxa de entrada é congelada no momento da criação. Mesmo aumentando o limite depois, quem entrar continua pagando o mesmo valor.
+        </p>
+        <div className="space-y-2">
+          {POOL_TIERS.map((t) => {
+            const selected = tier === t.id;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setTier(t.id)}
+                className={cn(
+                  "w-full text-left rounded-xl p-4 border transition-all bg-secondary",
+                  selected
+                    ? "border-accent shadow-gold-glow"
+                    : "border-accent/10 hover:border-accent/30"
+                )}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-display font-bold text-foreground">{t.label}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Taxa de entrada: <span className="text-accent font-medium">{t.pricePerPerson}</span> por pessoa
+                    </p>
+                  </div>
+                  <div
+                    className={cn(
+                      "h-6 w-6 rounded-full border-2 flex items-center justify-center shrink-0",
+                      selected ? "border-accent bg-accent" : "border-muted-foreground/30"
+                    )}
+                  >
+                    {selected && <Check className="h-3.5 w-3.5 text-primary" />}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </section>
 
