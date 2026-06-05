@@ -7,12 +7,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Trophy, Users, Copy, Check, Trash2, Settings2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { formatFee, buildInviteUrl } from "@/lib/pool-tiers";
 
 interface Pool {
   id: string;
   name: string;
   join_code: string;
   max_players: number;
+  entry_fee_cents: number;
   prize_info: string | null;
   owner_id: string;
   member_count?: number;
@@ -74,9 +76,10 @@ const PoolList = ({ refreshKey }: PoolListProps) => {
     fetchPools();
   }, [user, refreshKey]);
 
-  const copyCode = (code: string, id: string) => {
-    navigator.clipboard.writeText(code);
+  const copyLink = (code: string, id: string) => {
+    navigator.clipboard.writeText(buildInviteUrl(code));
     setCopiedId(id);
+    toast({ title: "Link de convite copiado!" });
     setTimeout(() => setCopiedId(null), 2000);
   };
 
@@ -136,14 +139,15 @@ const PoolList = ({ refreshKey }: PoolListProps) => {
                   <Users className="h-3.5 w-3.5" />
                   {pool.member_count}/{pool.max_players}
                 </span>
-                <span className="font-mono text-accent/80 tracking-wider">{pool.join_code}</span>
+                <span className="text-accent/80">{formatFee(pool.entry_fee_cents)}</span>
               </div>
               <div className="flex gap-1.5">
                 <Button
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8 text-muted-foreground hover:text-accent"
-                  onClick={() => copyCode(pool.join_code, pool.id)}
+                  onClick={() => copyLink(pool.join_code, pool.id)}
+                  title="Copiar link de convite"
                 >
                   {copiedId === pool.id ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                 </Button>
