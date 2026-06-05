@@ -55,8 +55,9 @@ export type Database = {
       }
       pools: {
         Row: {
-          access_password: string
+          access_password: string | null
           created_at: string
+          entry_fee_cents: number
           id: string
           join_code: string
           max_players: number
@@ -64,11 +65,13 @@ export type Database = {
           owner_id: string
           prize_info: string | null
           scoring_config: Json
+          tier: string
           updated_at: string
         }
         Insert: {
-          access_password: string
+          access_password?: string | null
           created_at?: string
+          entry_fee_cents?: number
           id?: string
           join_code: string
           max_players?: number
@@ -76,11 +79,13 @@ export type Database = {
           owner_id: string
           prize_info?: string | null
           scoring_config?: Json
+          tier?: string
           updated_at?: string
         }
         Update: {
-          access_password?: string
+          access_password?: string | null
           created_at?: string
+          entry_fee_cents?: number
           id?: string
           join_code?: string
           max_players?: number
@@ -88,6 +93,7 @@ export type Database = {
           owner_id?: string
           prize_info?: string | null
           scoring_config?: Json
+          tier?: string
           updated_at?: string
         }
         Relationships: [
