@@ -51,6 +51,12 @@ const AdminPage = () => {
       return;
     }
 
+    // Enforce ownership client-side as an early UX guard (RLS is the real enforcement)
+    if (data.owner_id !== user?.id) {
+      navigate("/app");
+      return;
+    }
+
     setPool(data);
     setName(data.name);
     setPrizeInfo(data.prize_info || "");

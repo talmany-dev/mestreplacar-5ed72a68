@@ -2,6 +2,8 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import Stripe from "npm:stripe@14.21.0";
 
+const APP_ORIGIN = Deno.env.get("APP_ORIGIN") ?? "https://mestredoplacar.com.br";
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -45,7 +47,7 @@ Deno.serve(async (req) => {
 
     const { data: member, error: memberErr } = await admin
       .from("pool_members")
-      .select("id, payment_status, pool_id, user_id")
+      .select("id, payment_status, stripe_session_id, pool_id, user_id")
       .eq("pool_id", poolId)
       .eq("user_id", userId)
       .maybeSingle();
@@ -62,6 +64,22 @@ Deno.serve(async (req) => {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+
+    // Idempotency: reuse existing Stripe session if one was already created
+    if (member.stripe_session_id) {
+      const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, { apiVersion: "2024-06-20" });
+      try {
+        const existing = await stripe.checkout.sessions.retrieve(member.stripe_session_id);
+        if (existing.status === "open") {
+          return new Response(JSON.stringify({ url: existing.url, session_id: existing.id }), {
+            status: 200,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+      } catch (_) {
+        // session expired or invalid — fall through to create a new one
+      }
     }
 
     const { data: pool, error: poolErr } = await admin
@@ -81,8 +99,7 @@ Deno.serve(async (req) => {
       apiVersion: "2024-06-20",
     });
 
-    const origin = req.headers.get("origin") ?? "https://mestredoplacar.com.br";
-
+    // Use the server-side APP_ORIGIN — never trust the client-supplied Origin header
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["pix"],
@@ -99,8 +116,8 @@ Deno.serve(async (req) => {
           quantity: 1,
         },
       ],
-      success_url: `${origin}/pay/${pool.id}?status=success`,
-      cancel_url: `${origin}/pay/${pool.id}?status=cancel`,
+      success_url: `${APP_ORIGIN}/pay/${pool.id}?status=success`,
+      cancel_url: `${APP_ORIGIN}/pay/${pool.id}?status=cancel`,
       metadata: {
         member_id: member.id,
         pool_id: pool.id,
@@ -115,10 +132,15 @@ Deno.serve(async (req) => {
       },
     });
 
-    await admin
+    const { error: updateErr } = await admin
       .from("pool_members")
       .update({ stripe_session_id: session.id })
       .eq("id", member.id);
+
+    if (updateErr) {
+      console.error("Failed to persist stripe_session_id", updateErr);
+      // Non-fatal: payment can still proceed; log for reconciliation
+    }
 
     return new Response(JSON.stringify({ url: session.url, session_id: session.id }), {
       status: 200,
@@ -126,7 +148,8 @@ Deno.serve(async (req) => {
     });
   } catch (err) {
     console.error("create-pix-payment error", err);
-    return new Response(JSON.stringify({ error: (err as Error).message }), {
+    // Return a generic message — never leak internal error details to the client
+    return new Response(JSON.stringify({ error: "Payment initialization failed. Please try again." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

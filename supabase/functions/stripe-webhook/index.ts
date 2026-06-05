@@ -31,16 +31,23 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
-  const markPaid = async (memberId: string | undefined, sessionId?: string) => {
-    if (!memberId) return;
+  /**
+   * Mark a pool_members row as paid.
+   * Requires both memberId AND sessionId so we always cross-check that the
+   * stripe_session_id stored on the row matches the event — prevents a forged
+   * or misrouted metadata from promoting an arbitrary member.
+   */
+  const markPaid = async (memberId: string | undefined, sessionId: string) => {
+    if (!memberId || !sessionId) return;
     const { error } = await admin
       .from("pool_members")
       .update({
         payment_status: "paid",
         paid_at: new Date().toISOString(),
-        ...(sessionId ? { stripe_session_id: sessionId } : {}),
+        stripe_session_id: sessionId,
       })
       .eq("id", memberId)
+      .eq("stripe_session_id", sessionId)   // cross-check: must match the stored session
       .eq("payment_status", "pending");
     if (error) console.error("Failed to mark paid", error);
   };
@@ -49,7 +56,6 @@ Deno.serve(async (req) => {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        // For Pix, payment may still be pending until paid; check status
         if (session.payment_status === "paid") {
           await markPaid(session.metadata?.member_id, session.id);
         }
@@ -60,13 +66,12 @@ Deno.serve(async (req) => {
         await markPaid(session.metadata?.member_id, session.id);
         break;
       }
-      case "payment_intent.succeeded": {
-        const pi = event.data.object as Stripe.PaymentIntent;
-        await markPaid(pi.metadata?.member_id);
-        break;
-      }
+      // payment_intent.succeeded is intentionally omitted: for PIX the
+      // checkout.session.async_payment_succeeded event is the canonical signal.
+      // Handling payment_intent.succeeded separately would require a session
+      // lookup to get the session ID for the cross-check, and the checkout
+      // session events already cover all Pix payment outcomes.
       default:
-        // ignore
         break;
     }
   } catch (err) {

@@ -46,6 +46,13 @@ const MatchesTab = () => {
 
   const saveBet = () => {
     if (!selectedMatch) return;
+    // BUG: bets are stored only in React state and are lost on page refresh.
+    // TODO: persist to a `bets` table with columns:
+    //   (pool_id, user_id, match_id, home_score, away_score, is_golden, pool_member_id)
+    // Call: supabase.from("bets").upsert({ pool_id, user_id, match_id: selectedMatch.id,
+    //   home_score: parseInt(homeScore)||0, away_score: parseInt(awayScore)||0, is_golden: isGolden },
+    //   { onConflict: "pool_id,user_id,match_id" })
+    // Until the table exists, bets are intentionally ephemeral.
     setMatches((prev) =>
       prev.map((m) =>
         m.id === selectedMatch.id

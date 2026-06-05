@@ -101,7 +101,18 @@ const JoinPoolPage = () => {
     });
     setJoining(false);
     if (error) {
-      toast({ title: "Erro ao entrar", description: error.message, variant: "destructive" });
+      // Unique constraint violation means the user is already a member
+      // (can happen from race condition or duplicate request)
+      if (error.code === "23505") {
+        navigate(`/app`);
+        return;
+      }
+      // Capacity exceeded at DB level (check constraint or RLS policy)
+      if (error.code === "23514" || error.message?.toLowerCase().includes("max_players")) {
+        toast({ title: "Sala lotada", description: "Todas as vagas foram preenchidas.", variant: "destructive" });
+        return;
+      }
+      toast({ title: "Erro ao entrar", description: "Não foi possível reservar sua vaga. Tente novamente.", variant: "destructive" });
       return;
     }
     toast({ title: `Vaga reservada em ${pool.name}!`, description: "Finalize o Pix para liberar seus palpites." });
