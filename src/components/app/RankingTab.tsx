@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Crown, TrendingUp, Medal, Loader2, Trophy } from "lucide-react";
+import { Crown, TrendingUp, Medal, Loader2, Trophy, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -19,53 +19,84 @@ const RankingTab = ({ poolId }: RankingTabProps) => {
   const { user } = useAuth();
   const [ranking, setRanking] = useState<RankEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasRealScores, setHasRealScores] = useState(false);
+
+  const loadRanking = async () => {
+    if (!poolId) return;
+    setLoading(true);
+
+    // Load all members of this pool
+    const { data: members } = await supabase
+      .from("pool_members")
+      .select("user_id, id")
+      .eq("pool_id", poolId);
+
+    if (!members?.length) { setLoading(false); return; }
+
+    const userIds = members.map((m) => m.user_id);
+
+    // Load real scores from pool_scores table
+    const { data: scores } = await supabase
+      .from("pool_scores")
+      .select("user_id, total_pts")
+      .eq("pool_id", poolId);
+
+    // Load bet counts per user
+    const { data: bets } = await supabase
+      .from("bets")
+      .select("user_id")
+      .eq("pool_id", poolId);
+
+    // Load profiles
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("id, full_name")
+      .in("id", userIds);
+
+    const realScoreMap = new Map((scores || []).map((s) => [s.user_id, s.total_pts]));
+    const betCountMap = new Map<string, number>();
+    for (const bet of bets || []) {
+      betCountMap.set(bet.user_id, (betCountMap.get(bet.user_id) ?? 0) + 1);
+    }
+
+    const hasReal = realScoreMap.size > 0;
+    setHasRealScores(hasReal);
+
+    const entries: RankEntry[] = members.map((m) => {
+      const profile = profiles?.find((p) => p.id === m.user_id);
+      const betCount = betCountMap.get(m.user_id) ?? 0;
+      const pts = hasReal
+        ? (realScoreMap.get(m.user_id) ?? 0)
+        : betCount * 5; // placeholder before any matches finish
+
+      return {
+        userId: m.user_id,
+        name: profile?.full_name || "Participante",
+        totalBets: betCount,
+        pts,
+        isYou: m.user_id === user?.id,
+      };
+    });
+
+    entries.sort((a, b) => b.pts - a.pts || b.totalBets - a.totalBets);
+    setRanking(entries);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    if (!poolId) return;
-    (async () => {
-      setLoading(true);
+    loadRanking();
 
-      // Load all members of this pool
-      const { data: members } = await supabase
-        .from("pool_members")
-        .select("user_id, id")
-        .eq("pool_id", poolId);
+    // Realtime: atualiza ranking quando pool_scores mudar
+    const channel = supabase
+      .channel(`ranking:${poolId}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "pool_scores", filter: `pool_id=eq.${poolId}` },
+        () => { loadRanking(); }
+      )
+      .subscribe();
 
-      if (!members?.length) { setLoading(false); return; }
-
-      // Load all bets for this pool
-      const { data: bets } = await supabase
-        .from("bets")
-        .select("user_id, home_score, away_score, is_golden")
-        .eq("pool_id", poolId);
-
-      // Load profiles for all members
-      const userIds = members.map((m) => m.user_id);
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("id, full_name")
-        .in("id", userIds);
-
-      // Build ranking — pts based on bets placed (real scoring requires match results)
-      const entries: RankEntry[] = members.map((m) => {
-        const profile = profiles?.find((p) => p.id === m.user_id);
-        const userBets = bets?.filter((b) => b.user_id === m.user_id) ?? [];
-        // Points: 5 pts per bet placed (placeholder until match results exist)
-        const pts = userBets.length * 5;
-        return {
-          userId: m.user_id,
-          name: profile?.full_name || "Participante",
-          totalBets: userBets.length,
-          pts,
-          isYou: m.user_id === user?.id,
-        };
-      });
-
-      // Sort by pts desc, then by bets placed
-      entries.sort((a, b) => b.pts - a.pts || b.totalBets - a.totalBets);
-      setRanking(entries);
-      setLoading(false);
-    })();
+    return () => { supabase.removeChannel(channel); };
   }, [poolId, user]);
 
   const myEntry = ranking.find((r) => r.isYou);
@@ -82,7 +113,10 @@ const RankingTab = ({ poolId }: RankingTabProps) => {
   return (
     <div className="pb-4">
       {/* Hero Banner */}
-      <div className="relative mx-4 mt-4 rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, hsl(216 70% 20%), hsl(216 67% 32%), hsl(216 60% 25%))' }}>
+      <div
+        className="relative mx-4 mt-4 rounded-2xl overflow-hidden"
+        style={{ background: "linear-gradient(135deg, hsl(216 70% 20%), hsl(216 67% 32%), hsl(216 60% 25%))" }}
+      >
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsla(40,40%,55%,0.15),transparent_60%)]" />
         <div className="relative p-5">
           <div className="flex items-center gap-2 mb-2">
@@ -102,7 +136,7 @@ const RankingTab = ({ poolId }: RankingTabProps) => {
             <div className="flex items-center gap-3 mt-3">
               <div className="flex items-center gap-1.5 bg-gold/10 rounded-lg px-3 py-1.5 border border-gold/20">
                 <TrendingUp className="h-3.5 w-3.5 text-gold" />
-                <span className="text-xs font-semibold text-gold">{myEntry.totalBets} palpites feitos</span>
+                <span className="text-xs font-semibold text-gold">{myEntry.totalBets} palpites</span>
               </div>
               <div className="flex items-center gap-1.5 bg-gold/10 rounded-lg px-3 py-1.5 border border-gold/20">
                 <Crown className="h-3.5 w-3.5 text-gold" />
@@ -113,10 +147,13 @@ const RankingTab = ({ poolId }: RankingTabProps) => {
         </div>
       </div>
 
-      {/* Info */}
-      <div className="mx-4 mt-3 p-3 rounded-xl bg-secondary/50 border border-gold/10">
-        <p className="text-xs text-muted-foreground text-center">
-          ⚡ Pontuação real será calculada após os jogos. Por enquanto, cada palpite vale 5 pts.
+      {/* Status info */}
+      <div className="mx-4 mt-3 p-3 rounded-xl bg-secondary/50 border border-gold/10 flex items-center gap-2">
+        <Zap className={`h-3.5 w-3.5 shrink-0 ${hasRealScores ? "text-green-400" : "text-amber-400"}`} />
+        <p className="text-xs text-muted-foreground">
+          {hasRealScores
+            ? "✅ Pontuação calculada com base nos resultados reais dos jogos."
+            : "⏳ Jogos ainda não começaram. Cada palpite registrado vale 5 pts provisórios."}
         </p>
       </div>
 
@@ -141,20 +178,30 @@ const RankingTab = ({ poolId }: RankingTabProps) => {
                 className={`flex items-center gap-3 rounded-xl px-4 py-3 border transition-all duration-200 ${
                   player.isYou ? "border-gold/30 shadow-gold-glow" : "border-gold/10"
                 }`}
-                style={{ background: player.isYou ? 'hsla(40,40%,55%,0.08)' : 'hsl(216 60% 25%)' }}
+                style={{ background: player.isYou ? "hsla(40,40%,55%,0.08)" : "hsl(216 60% 25%)" }}
               >
-                <span className={`font-display text-lg font-bold w-8 text-center ${rank <= 3 || player.isYou ? "text-gold" : "text-muted-foreground"}`}>
+                <span
+                  className={`font-display text-lg font-bold w-8 text-center ${
+                    rank <= 3 || player.isYou ? "text-gold" : "text-muted-foreground"
+                  }`}
+                >
                   {String(rank).padStart(2, "0")}
                 </span>
                 {rank === 1 && <Crown className="h-5 w-5 text-gold fill-gold -ml-1" />}
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm font-medium truncate ${player.isYou ? "text-gold font-semibold" : "text-foreground"}`}>
+                  <p
+                    className={`text-sm font-medium truncate ${
+                      player.isYou ? "text-gold font-semibold" : "text-foreground"
+                    }`}
+                  >
                     {player.name} {player.isYou ? "(Você)" : ""}
                   </p>
                   <p className="text-[11px] text-muted-foreground">{player.totalBets} palpites feitos</p>
                 </div>
                 <div className="text-right">
-                  <span className="font-display font-bold text-sm tabular-nums text-foreground">{player.pts}</span>
+                  <span className="font-display font-bold text-sm tabular-nums text-foreground">
+                    {player.pts}
+                  </span>
                   <p className="text-[10px] text-muted-foreground">pts</p>
                 </div>
               </div>
