@@ -21,7 +21,7 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen" style={{ background: "linear-gradient(135deg, hsl(216 70% 15%), hsl(216 67% 28%), hsl(216 60% 20%))" }}>
       {/* Header — glassmorphism */}
-      <header className="sticky top-0 z-50 glassmorphism border-b border-gold/10">
+      <header className="sticky top-0 z-50 glassmorphism border-b border-gold/10 safe-top">
         <div className="container flex items-center justify-between h-16">
           <img src={logoSecondary} alt="Mestre do Placar" className="h-16 object-contain" />
           <div className="flex items-center gap-2">

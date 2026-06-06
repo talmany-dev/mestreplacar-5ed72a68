@@ -153,4 +153,14 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
+
+  /* Safe area para PWA no iPhone (notch / Dynamic Island) */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  /* Barra inferior do iPhone (home indicator) */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }

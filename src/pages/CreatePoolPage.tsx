@@ -7,7 +7,7 @@ const CreatePoolPage = () => {
 
   return (
     <div className="min-h-screen" style={{ background: "linear-gradient(135deg, hsl(216 70% 15%), hsl(216 67% 28%), hsl(216 60% 20%))" }}>
-      <header className="px-4 py-3 flex items-center gap-3 border-b border-accent/10 glassmorphism">
+      <header className="px-4 py-3 flex items-center gap-3 border-b border-accent/10 glassmorphism safe-top">
         <button onClick={() => navigate("/app")} className="text-muted-foreground transition-colors hover:text-foreground">
           <ArrowLeft className="h-5 w-5" />
         </button>

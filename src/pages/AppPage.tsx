@@ -27,7 +27,7 @@ const AppPage = () => {
   if (selectedPool) {
     return (
       <div className="min-h-screen bg-background flex flex-col">
-        <header className="glassmorphism px-4 py-3 flex items-center gap-3 shrink-0 border-b border-gold/10">
+        <header className="glassmorphism px-4 py-3 flex items-center gap-3 shrink-0 border-b border-gold/10 safe-top">
           <button
             onClick={() => { setSelectedPool(null); setActiveTab("matches"); }}
             className="text-muted-foreground hover:text-foreground transition-colors"
@@ -57,7 +57,7 @@ const AppPage = () => {
             </TabsContent>
           </div>
 
-          <TabsList className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-card border-t border-gold/10 rounded-none grid grid-cols-4 gap-0 p-0">
+          <TabsList className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-card border-t border-gold/10 rounded-none grid grid-cols-4 gap-0 p-0 safe-bottom">
             {[
               { value: "matches", icon: Calendar, label: "Jogos" },
               { value: "ranking", icon: Trophy, label: "Ranking" },
@@ -82,7 +82,7 @@ const AppPage = () => {
   // Home view — pool list
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="glassmorphism px-4 py-3 flex items-center justify-between shrink-0 border-b border-gold/10">
+      <header className="glassmorphism px-4 py-3 flex items-center justify-between shrink-0 border-b border-gold/10 safe-top">
         <img src={logoSecondary} alt="Mestre do Placar" className="h-16 object-contain" />
         <div className="flex items-center gap-2">
           <JoinPoolDialog onJoined={() => setPoolRefreshKey((k) => k + 1)} />
@@ -105,7 +105,7 @@ const AppPage = () => {
       </div>
 
       {/* Profile tab accessible from home */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-card border-t border-gold/10 flex items-center justify-end px-4">
+      <div className="fixed bottom-0 left-0 right-0 z-50 h-16 bg-card border-t border-gold/10 flex items-center justify-end px-4 safe-bottom">
         <button
           onClick={() => {
             setSelectedPool({ id: "__profile__", name: "" });
