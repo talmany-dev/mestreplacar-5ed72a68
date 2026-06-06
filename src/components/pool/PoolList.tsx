@@ -24,9 +24,10 @@ interface Pool {
 
 interface PoolListProps {
   refreshKey: number;
+  onSelectPool?: (id: string, name: string) => void;
 }
 
-const PoolList = ({ refreshKey }: PoolListProps) => {
+const PoolList = ({ refreshKey, onSelectPool }: PoolListProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -121,7 +122,11 @@ const PoolList = ({ refreshKey }: PoolListProps) => {
   return (
     <div className="space-y-3">
       {pools.map((pool) => (
-        <Card key={pool.id} className="bg-secondary border-accent/10">
+        <Card
+          key={pool.id}
+          className="bg-secondary border-accent/10 cursor-pointer hover:border-accent/40 transition-all"
+          onClick={() => onSelectPool?.(pool.id, pool.name)}
+        >
           <CardContent className="p-4">
             <div className="flex items-start justify-between mb-2">
               <div>
