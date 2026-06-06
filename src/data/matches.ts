@@ -64,8 +64,15 @@ const FLAGS: Record<string, string> = {
   "Panamá": "pa",
 };
 
+// flagcdn.com only supports these fixed widths
+const VALID_FLAG_SIZES = [20, 40, 80, 160, 320, 640];
+
 export function getFlagUrl(code: string, size: number = 40): string {
-  return `https://flagcdn.com/w${size}/${code}.png`;
+  // Map to nearest supported size to avoid broken images
+  const nearest = VALID_FLAG_SIZES.reduce((prev, curr) =>
+    Math.abs(curr - size) < Math.abs(prev - size) ? curr : prev
+  );
+  return `https://flagcdn.com/w${nearest}/${code}.png`;
 }
 
 function flag(team: string): string {
