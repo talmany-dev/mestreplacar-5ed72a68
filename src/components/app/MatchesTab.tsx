@@ -93,24 +93,24 @@ const MatchesTab = ({ poolId }: MatchesTabProps) => {
     if (!selectedMatch || !user) return;
     setSaving(true);
 
-    // Get pool_member_id for this user+pool
-    const { data: memberData } = await supabase
+    const homeVal = Math.max(0, parseInt(homeScore) || 0);
+    const awayVal = Math.max(0, parseInt(awayScore) || 0);
+
+    // 1. Fetch pool_member_id
+    const { data: memberData, error: memberErr } = await supabase
       .from("pool_members")
       .select("id")
       .eq("pool_id", poolId)
       .eq("user_id", user.id)
       .maybeSingle();
 
-    if (!memberData) {
+    if (memberErr || !memberData) {
       toast({ title: "Erro ao salvar palpite", description: "Você não é membro deste bolão.", variant: "destructive" });
       setSaving(false);
       return;
     }
 
-    const homeVal = parseInt(homeScore) >= 0 ? parseInt(homeScore) : 0;
-    const awayVal = parseInt(awayScore) >= 0 ? parseInt(awayScore) : 0;
-
-    // If golden toggled on, remove golden from any other match first
+    // 2. Remove golden flag de outras apostas se necessário
     if (isGolden) {
       await supabase
         .from("bets")
@@ -121,10 +121,34 @@ const MatchesTab = ({ poolId }: MatchesTabProps) => {
         .neq("match_id", selectedMatch.id);
     }
 
-    const { error } = await supabase
+    // 3. Verificar se aposta já existe (INSERT vs UPDATE explícito)
+    const { data: existing } = await supabase
       .from("bets")
-      .upsert(
-        {
+      .select("id")
+      .eq("pool_id", poolId)
+      .eq("user_id", user.id)
+      .eq("match_id", selectedMatch.id)
+      .maybeSingle();
+
+    let saveError = null;
+
+    if (existing) {
+      // Atualizar aposta existente
+      const { error } = await supabase
+        .from("bets")
+        .update({
+          home_score: homeVal,
+          away_score: awayVal,
+          is_golden: isGolden,
+        })
+        .eq("id", existing.id)
+        .eq("user_id", user.id); // segurança extra
+      saveError = error;
+    } else {
+      // Inserir nova aposta
+      const { error } = await supabase
+        .from("bets")
+        .insert({
           pool_id: poolId,
           user_id: user.id,
           pool_member_id: memberData.id,
@@ -132,22 +156,23 @@ const MatchesTab = ({ poolId }: MatchesTabProps) => {
           home_score: homeVal,
           away_score: awayVal,
           is_golden: isGolden,
-        },
-        { onConflict: "pool_id,user_id,match_id" }
-      );
+        });
+      saveError = error;
+    }
 
-    if (error) {
-      toast({ title: "Erro ao salvar palpite", description: error.message, variant: "destructive" });
+    if (saveError) {
+      console.error("saveBet error:", saveError);
+      toast({ title: "Erro ao salvar palpite", description: "Tente novamente.", variant: "destructive" });
       setSaving(false);
       return;
     }
 
-    // Update local state
+    // 4. Atualizar estado local
     setMatches((prev) =>
       prev.map((m) => {
         if (m.id === selectedMatch.id)
           return { ...m, bet: { home: homeVal, away: awayVal }, golden: isGolden };
-        if (isGolden)
+        if (isGolden && m.id !== selectedMatch.id)
           return { ...m, golden: false };
         return m;
       })

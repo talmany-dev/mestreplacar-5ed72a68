@@ -155,7 +155,7 @@ const PoolList = ({ refreshKey, onSelectPool }: PoolListProps) => {
                 variant="hero"
                 size="sm"
                 className="w-full mt-2 mb-1"
-                onClick={() => navigate(`/pay/${pool.id}`)}
+                onClick={(e) => { e.stopPropagation(); navigate(`/pay/${pool.id}`); }}
               >
                 <QrCode className="h-3.5 w-3.5 mr-1.5" />
                 Finalizar pagamento Pix
@@ -175,7 +175,7 @@ const PoolList = ({ refreshKey, onSelectPool }: PoolListProps) => {
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8 text-muted-foreground hover:text-accent"
-                  onClick={() => copyLink(pool.join_code, pool.id)}
+                  onClick={(e) => { e.stopPropagation(); copyLink(pool.join_code, pool.id); }}
                   title="Copiar link de convite"
                 >
                   {copiedId === pool.id ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
@@ -185,7 +185,7 @@ const PoolList = ({ refreshKey, onSelectPool }: PoolListProps) => {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-muted-foreground hover:text-accent"
-                    onClick={() => navigate(`/admin/${pool.id}`)}
+                    onClick={(e) => { e.stopPropagation(); navigate(`/admin/${pool.id}`); }}
                   >
                     <Settings2 className="h-3.5 w-3.5" />
                   </Button>
@@ -195,7 +195,7 @@ const PoolList = ({ refreshKey, onSelectPool }: PoolListProps) => {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                    onClick={() => deletePool(pool.id)}
+                    onClick={(e) => { e.stopPropagation(); deletePool(pool.id); }}
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
