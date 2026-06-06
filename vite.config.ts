@@ -20,6 +20,8 @@ export default defineConfig(({ mode }) => ({
       includeAssets: ["favicon.ico", "icons/*.png", "robots.txt"],
       manifest: false, // usamos o manifest.webmanifest em /public
       workbox: {
+        // Aumenta o limite para 4MB para cobrir imagens grandes (hero-bg ~2.4MB)
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         // Cache de assets estáticos (JS, CSS, fontes, imagens)
         globPatterns: ["**/*.{js,css,html,ico,png,svg,webp,woff,woff2}"],
         // Rotas da aplicação: retorna index.html (SPA offline)
