@@ -24,6 +24,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // onAuthStateChange fires INITIAL_SESSION synchronously on mount, which
+    // covers both "already logged in" and "no session" cases. Using getSession
+    // in parallel creates a race: it can resolve with null before the auth
+    // subscription fires and briefly flip loading=false with user=null,
+    // triggering a spurious redirect to /login.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
@@ -31,12 +36,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoading(false);
       }
     );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
 
     return () => subscription.unsubscribe();
   }, []);
